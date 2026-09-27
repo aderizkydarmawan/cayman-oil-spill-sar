@@ -160,7 +160,7 @@ Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-rev
 
 ## Live demo & tim
 
-- **Live demo:** https://cayman.vercel.app (aktif setelah deploy; jika nama `cayman` sudah dipakai orang lain di Vercel, sesuaikan)
+- **Live demo:** https://cayman-seven.vercel.app (Vercel project `cayman`; subdomain `cayman.vercel.app` sudah dipakai pihak lain)
 - **Tim:** data ada di `web/team.json`, foto di `web/img/team/`.
 
 | Nama | NPM | Peran | LinkedIn |
@@ -176,7 +176,7 @@ Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-rev
 
 1. Push repo ini ke GitHub (Public).
 2. Di Vercel: **New Project → import repo**, lalu set **Root Directory = `web`**. Framework: *Other*, tanpa build command.
-3. Set nama project ke `cayman` supaya URL-nya `https://cayman.vercel.app`.
+3. Project Vercel: `cayman` (team CAYMAN) → https://cayman-seven.vercel.app. Setiap push ke `main` otomatis deploy ulang.
 4. `web/vercel.json` sudah mengatur header COOP/COEP untuk WASM multi-thread.
 
 ## Yang masih harus diisi tim
