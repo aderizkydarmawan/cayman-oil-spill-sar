@@ -1,0 +1,19 @@
+{
+ "input_name": "image",
+ "input_shape": [
+  1,
+  1,
+  256,
+  256
+ ],
+ "layout": "NCHW",
+ "dtype": "float32",
+ "channel_source": "R channel of RGB PNG (R=G=B in dataset) or grayscale",
+ "scale": "x/255",
+ "mean": 0.38344,
+ "std": 0.201973,
+ "formula": "(x/255 - mean) / std",
+ "resize": "none if 256x256; otherwise bilinear resize to 256x256 (mask: nearest)",
+ "output": "logits (1,1,256,256) -> sigmoid -> prob; mask = prob >= threshold",
+ "mask_label_rule": "label pixel >= 128 -> 1 (oil)"
+}

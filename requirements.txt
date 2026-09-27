@@ -1,0 +1,9 @@
+onnxruntime>=1.20
+onnx
+onnxconverter-common
+torch
+numpy
+pandas
+pillow
+matplotlib
+kagglehub

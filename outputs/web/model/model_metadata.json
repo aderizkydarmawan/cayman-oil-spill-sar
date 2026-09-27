@@ -1,0 +1,95 @@
+{
+ "model_name": "UNetLite (U-Net ringan, base 16, 1.94M parameter)",
+ "model_file": "unet_lite_int8_qdq.onnx",
+ "variant": "int8",
+ "model_size_mb": 2.009,
+ "threshold": 0.45,
+ "labels": {
+  "0": "background (laut / bukan minyak)",
+  "1": "oil spill"
+ },
+ "preprocessing": {
+  "input_name": "image",
+  "input_shape": [
+   1,
+   1,
+   256,
+   256
+  ],
+  "layout": "NCHW",
+  "dtype": "float32",
+  "channel_source": "R channel of RGB PNG (R=G=B in dataset) or grayscale",
+  "scale": "x/255",
+  "mean": 0.383440284836608,
+  "std": 0.2019732132211145,
+  "formula": "(x/255 - mean) / std",
+  "resize": "none if 256x256; otherwise bilinear resize to 256x256 (mask: nearest)",
+  "output": "logits (1,1,256,256) -> sigmoid -> prob; mask = prob >= threshold",
+  "mask_label_rule": "label pixel >= 128 -> 1 (oil)"
+ },
+ "io": {
+  "input": {
+   "name": "image",
+   "dtype": "float32",
+   "shape": [
+    1,
+    1,
+    256,
+    256
+   ],
+   "layout": "NCHW (1 channel grayscale)"
+  },
+  "output": {
+   "name": "logits",
+   "dtype": "float32",
+   "shape": [
+    1,
+    1,
+    256,
+    256
+   ],
+   "postprocess": "prob = sigmoid(logits); mask = prob >= threshold"
+  }
+ },
+ "metrics_test_sentinel": {
+  "pytorch": {
+   "dice_global": 0.8546599415353939,
+   "iou_global": 0.7462062775322069,
+   "precision_global": 0.8057744951794317,
+   "recall_global": 0.909860149266584,
+   "pr_auc_pixel": 0.936058369460025,
+   "dice_macro": 0.7608931443967645,
+   "iou_macro": 0.6507746359948814
+  },
+  "onnx_web_variant": {
+   "test_dice": 0.8545,
+   "test_iou": 0.7459,
+   "test_precision": 0.8062,
+   "test_recall": 0.909
+  }
+ },
+ "latency_note": "Latency CPU di atas diukur di Colab (ORT CPU); latency browser tergantung perangkat & diukur di halaman web.",
+ "cpu_latency_ms_colab": {
+  "median": 72.52,
+  "p90": 82.88
+ },
+ "training": {
+  "sensor": "sentinel",
+  "n_train": 2850,
+  "n_val": 504,
+  "n_test": 839,
+  "best_epoch": 37,
+  "seed": 42
+ },
+ "dataset": {
+  "name": "Deep-SAR SOS Oil Spill Detection Dataset (Synthetic Aperture Radar Oil Spill Segmentation Dataset, SOS)",
+  "kaggle_handle": "bitsandlayers/sar-oil-spill-segmentation-dataset-sos",
+  "url": "https://www.kaggle.com/datasets/bitsandlayers/sar-oil-spill-segmentation-dataset-sos",
+  "version": "1 (kagglehub)",
+  "owner": "BitsandLayers (Kaggle)",
+  "license": "CC BY 4.0 (Attribution 4.0 International) - sebagaimana tertera di halaman Kaggle",
+  "accessed": "2026-09-24",
+  "regions": "Gulf of Mexico (ALOS PALSAR), Persian Gulf (Sentinel-1A)"
+ },
+ "created_utc": "2026-09-24T06:38:47+00:00"
+}

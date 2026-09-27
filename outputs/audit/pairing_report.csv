@@ -1,0 +1,5 @@
+split,sensor,n_img,n_lbl,n_pairs,img_without_lbl,lbl_without_img,examples_unpaired
+train,palsar,3101,3101,3101,0,0,[]
+train,sentinel,3354,3354,3354,0,0,[]
+test,palsar,776,776,776,0,0,[]
+test,sentinel,839,839,839,0,0,[]

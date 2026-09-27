@@ -1,0 +1,38 @@
+[
+ {
+  "image": "sample1_sentinel_test_807.png",
+  "mask": "sample1_sentinel_test_807_mask.png",
+  "source": "SOS dataset: test/sentinel/image/807.png",
+  "note": "kasus mudah (Dice ~ persentil 90)",
+  "gt_fg_frac": 0.1986,
+  "pred_fg_frac": 0.1932,
+  "dice_python": 0.9047
+ },
+ {
+  "image": "sample2_sentinel_test_187.png",
+  "mask": "sample2_sentinel_test_187_mask.png",
+  "source": "SOS dataset: test/sentinel/image/187.png",
+  "note": "kasus tipikal (Dice ~ median)",
+  "gt_fg_frac": 0.1854,
+  "pred_fg_frac": 0.2154,
+  "dice_python": 0.7628
+ },
+ {
+  "image": "sample3_sentinel_test_513.png",
+  "mask": "sample3_sentinel_test_513_mask.png",
+  "source": "SOS dataset: test/sentinel/image/513.png",
+  "note": "kasus sulit (Dice ~ persentil 15)",
+  "gt_fg_frac": 0.1006,
+  "pred_fg_frac": 0.14,
+  "dice_python": 0.606
+ },
+ {
+  "image": "sample4_sentinel_test_814.png",
+  "mask": "sample4_sentinel_test_814_mask.png",
+  "source": "SOS dataset: test/sentinel/image/814.png",
+  "note": "tanpa tumpahan (GT kosong)",
+  "gt_fg_frac": 0.0,
+  "pred_fg_frac": 0.0,
+  "dice_python": 1.0
+ }
+]

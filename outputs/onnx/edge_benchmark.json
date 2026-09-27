@@ -1,0 +1,93 @@
+{
+ "env": {
+  "onnxruntime": "1.30.0",
+  "onnx": "1.23.0",
+  "torch": "2.11.0+cu128",
+  "exporter": "torch.onnx.export (TorchScript), opset 17",
+  "cpu": "Intel(R) Xeon(R) CPU @ 2.00GHz",
+  "n_cpu": 2,
+  "latency_protocol": "batch=1, input float32 1x1x256x256; ORT CPUExecutionProvider; 5 warm-up + 50 run; median & p90 wall-clock sess.run(); tanpa pre/post-processing. GPU: 10 warm-up + 100 run dengan cuda.synchronize.",
+  "web_variant_rule": "varian terkecil dengan penurunan Dice VALIDATION <= 0.005 terhadap FP32",
+  "web_variant": "int8",
+  "threshold": 0.45
+ },
+ "results": {
+  "fp32": {
+   "file": "unet_lite_fp32.onnx",
+   "size_mb": 7.772,
+   "val_dice": 0.8641,
+   "val_iou": 0.7608,
+   "test_dice": 0.8547,
+   "test_iou": 0.7462,
+   "test_precision": 0.8058,
+   "test_recall": 0.9098,
+   "max_abs_prob_diff_vs_torch_fp32_cpu": 9.5367431640625e-07,
+   "test_pixel_agreement_vs_torch_gpu_mask": 0.99992,
+   "cpu_latency_ms_all_threads": {
+    "median": 64.4,
+    "p90": 70.62
+   },
+   "cpu_latency_ms_1_thread": {
+    "median": 63.35,
+    "p90": 69.87
+   },
+   "eval_sec": 98.2
+  },
+  "fp16": {
+   "file": "unet_lite_fp16.onnx",
+   "size_mb": 3.894,
+   "val_dice": 0.8641,
+   "val_iou": 0.7607,
+   "test_dice": 0.8547,
+   "test_iou": 0.7462,
+   "test_precision": 0.8058,
+   "test_recall": 0.9099,
+   "max_abs_prob_diff_vs_torch_fp32_cpu": 0.0025286078453063965,
+   "test_pixel_agreement_vs_torch_gpu_mask": 0.99993,
+   "cpu_latency_ms_all_threads": {
+    "median": 61.64,
+    "p90": 66.05
+   },
+   "cpu_latency_ms_1_thread": {
+    "median": 62.83,
+    "p90": 93.26
+   },
+   "eval_sec": 113.3
+  },
+  "int8": {
+   "file": "unet_lite_int8_qdq.onnx",
+   "size_mb": 2.009,
+   "val_dice": 0.8638,
+   "val_iou": 0.7603,
+   "test_dice": 0.8545,
+   "test_iou": 0.7459,
+   "test_precision": 0.8062,
+   "test_recall": 0.909,
+   "max_abs_prob_diff_vs_torch_fp32_cpu": 0.4440336227416992,
+   "test_pixel_agreement_vs_torch_gpu_mask": 0.99614,
+   "cpu_latency_ms_all_threads": {
+    "median": 72.52,
+    "p90": 82.88
+   },
+   "cpu_latency_ms_1_thread": {
+    "median": 50.78,
+    "p90": 75.92
+   },
+   "eval_sec": 84.1
+  },
+  "torch_gpu_fp32": {
+   "latency_ms": {
+    "median": 2.78,
+    "p90": 3.19
+   },
+   "device": "Tesla T4"
+  },
+  "torch_gpu_amp_fp16": {
+   "latency_ms": {
+    "median": 2.69,
+    "p90": 2.83
+   },
+   "device": "Tesla T4"
+  }
+ }
+}

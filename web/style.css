@@ -1,0 +1,30 @@
+:root {
+  --bg: #f6f7f9; --fg: #1b1f24; --muted: #5b6573; --panel: #ffffff; --line: #d9dee5; --accent: #0b6bcb;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #111418; --fg: #e8ebef; --muted: #9aa5b1; --panel: #1a1f25; --line: #2c333b; --accent: #4ea1f5; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--fg); }
+header, main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+h1 { font-size: 1.5rem; margin: 8px 0 4px; }
+h2 { font-size: 1.1rem; margin: 0 0 10px; }
+.sub, .muted { color: var(--muted); }
+.small { font-size: 0.85rem; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 12px 0; display: grid; gap: 6px; }
+.buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+button { background: var(--accent); color: #fff; border: 0; border-radius: 8px; padding: 8px 14px; font-weight: 600; cursor: pointer; }
+button:hover { filter: brightness(1.1); }
+.upload, .threshold { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 8px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+figure { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 8px; }
+canvas { width: 100%; height: auto; image-rendering: pixelated; display: block; border-radius: 6px; background: #000; }
+figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 6px; text-align: center; }
+nav a { color: var(--accent); }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+th, td { border-bottom: 1px solid var(--line); padding: 6px 8px; text-align: left; }
+.team { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.member { display: grid; gap: 4px; justify-items: center; text-align: center; border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.member img, .avatar { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; }
+.avatar { display: grid; place-items: center; background: var(--accent); color: #fff; font-size: 2rem; font-weight: 700; }
+.member a { color: var(--accent); }

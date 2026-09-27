@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Oil Spill SAR Segmentation</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- onnxruntime-web (WASM) dipin ke versi tertentu agar reproducible -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <h1>Marine Oil Spill Segmentation — Sentinel-1 SAR</h1>
+    <p class="sub">U-Net ringan, inferensi 100% di browser (onnxruntime-web / WebAssembly). Tidak ada gambar yang dikirim ke server.</p>
+    <nav><a href="#demo">Demo</a> · <a href="#hasil">Hasil</a> · <a href="#tim">Tim</a></nav>
+  </header>
+
+  <main>
+    <section class="panel" id="hasil">
+      <h2>Kasus 38 — Pilar HSSE (perlindungan lingkungan laut)</h2>
+      <p>Deteksi dan pemetaan tumpahan minyak dari citra Sentinel-1 SAR (dataset SOS, CC BY 4.0). Hasil pada 839 citra test:</p>
+      <table>
+        <tr><th>Model</th><th>Dice</th><th>IoU</th><th>Precision</th><th>Recall</th><th>Ukuran</th></tr>
+        <tr><td>U-Net Lite INT8 (web)</td><td>0.8545</td><td>0.7459</td><td>0.8062</td><td>0.9090</td><td>2.01 MB</td></tr>
+        <tr><td>U-Net Lite FP32</td><td>0.8547</td><td>0.7462</td><td>0.8058</td><td>0.9099</td><td>7.77 MB</td></tr>
+        <tr><td>Baseline dark-spot threshold</td><td>0.7259</td><td>0.5698</td><td>0.6669</td><td>0.7964</td><td>-</td></tr>
+      </table>
+    </section>
+  </main>
+
+  <main id="demo">
+
+  <main>
+    <section class="panel" id="status-panel">
+      <div><b>Model:</b> <span id="model-name">memuat…</span></div>
+      <div><b>Ukuran file:</b> <span id="model-size">-</span></div>
+      <div><b>Backend:</b> <span id="backend">-</span></div>
+      <div><b>Status:</b> <span id="status">memuat model…</span></div>
+    </section>
+
+    <section class="panel">
+      <h2>Try Sample Data</h2>
+      <div id="sample-buttons" class="buttons"></div>
+      <div class="upload">
+        <label for="file">atau unggah citra SAR (PNG/JPG, grayscale; akan di-resize ke 256×256):</label>
+        <input type="file" id="file" accept="image/*" />
+      </div>
+      <div class="threshold">
+        <label for="thr">Threshold: <span id="thr-val">-</span></label>
+        <input type="range" id="thr" min="0.05" max="0.95" step="0.05" />
+      </div>
+    </section>
+
+    <section class="grid">
+      <figure><canvas id="c-input" width="256" height="256"></canvas><figcaption>Citra SAR (input)</figcaption></figure>
+      <figure><canvas id="c-prob" width="256" height="256"></canvas><figcaption>Probabilitas oil spill</figcaption></figure>
+      <figure><canvas id="c-overlay" width="256" height="256"></canvas><figcaption>Prediksi (merah) di atas citra</figcaption></figure>
+      <figure id="fig-gt" hidden><canvas id="c-gt" width="256" height="256"></canvas><figcaption>Ground truth (sampel)</figcaption></figure>
+    </section>
+
+    <section class="panel" id="result-panel">
+      <div><b>Area terdeteksi minyak:</b> <span id="area">-</span></div>
+      <div><b>Latency inferensi:</b> <span id="latency">-</span></div>
+      <div id="dice-row" hidden><b>Dice vs ground truth (browser):</b> <span id="dice">-</span> <span class="muted" id="dice-ref"></span></div>
+    </section>
+
+    <section class="panel muted small" id="notes">
+      Catatan: model dilatih hanya pada patch Sentinel-1A (Persian Gulf) dari dataset SOS. Hasil pada sensor/wilayah lain
+      belum tervalidasi. Look-alike (angin lemah, biogenic slick) dapat menimbulkan false positive. Bukan alat keputusan tunggal.
+    </section>
+  </main>
+
+  <main>
+    <section class="panel" id="tim">
+      <h2>Tim</h2>
+      <div id="team" class="team"></div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

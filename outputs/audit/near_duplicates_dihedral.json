@@ -1,0 +1,14 @@
+{
+ "palsar": {
+  "test_near_train": 9,
+  "train_near_train": 39,
+  "test_min_dist_p1": 8.0,
+  "train_min_dist_p1": 8.0
+ },
+ "sentinel": {
+  "test_near_train": 9,
+  "train_near_train": 47,
+  "test_min_dist_p1": 8.38,
+  "train_min_dist_p1": 8.0
+ }
+}

@@ -1,0 +1,6 @@
+Sample images & masks are unmodified files from the Deep-SAR SOS Oil Spill Detection Dataset (Synthetic Aperture Radar Oil Spill Segmentation Dataset, SOS)
+https://www.kaggle.com/datasets/bitsandlayers/sar-oil-spill-segmentation-dataset-sos
+Owner: BitsandLayers (Kaggle)
+License: CC BY 4.0 (Attribution 4.0 International) - sebagaimana tertera di halaman Kaggle
+Accessed: 2026-09-24
+Files: SOS dataset: test/sentinel/image/807.png, SOS dataset: test/sentinel/image/187.png, SOS dataset: test/sentinel/image/513.png, SOS dataset: test/sentinel/image/814.png
