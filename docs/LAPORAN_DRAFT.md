@@ -1,5 +1,7 @@
 # Segmentasi Tumpahan Minyak pada Citra Sentinel-1 SAR Menggunakan U-Net Ringan Terkuantisasi INT8 untuk Inferensi Edge di Browser
 
+**Kelompok 1 — CAYMAN**: Ade Rizky Darmawan (23083010080), Arkananta Daniswara Handoyo (23083010059), Muhammad Arsyad Alzam (23083010082), Choirul Amin (22083010050), Hana Titania Sastrian (23083010056), Zaydan Arief Athallah (23083010063)
+
 *Draft laporan (single column, A4, spasi 1.15, margin 2.5 cm). Semua angka diambil dari `outputs/` hasil eksekusi nyata. Bagian bertanda [TIM] harus dilengkapi.*
 
 ## Abstrak
