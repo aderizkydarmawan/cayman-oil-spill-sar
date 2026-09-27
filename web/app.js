@@ -180,7 +180,7 @@ fetch("team.json").then((r) => r.json()).then((team) => {
     card.className = "member";
     const ok = (v) => v && !String(v).startsWith("ISI_"); // placeholder belum diisi -> disembunyikan
     const img = m.foto ? `<img src="${m.foto}" alt="Foto ${m.nama}" loading="lazy">` : `<div class="avatar">${m.nama.charAt(0)}</div>`;
-    card.innerHTML = `${img}<b>${m.nama}</b>` +
+    card.innerHTML = (m.ketua ? `<span class="badge">Ketua Kelompok</span>` : "") + `${img}<b>${m.nama}</b>` +
       (ok(m.npm) ? `<span>NPM ${m.npm}</span>` : "") +
       (ok(m.peran) ? `<span class="muted">${m.peran}</span>` : "") +
       (ok(m.linkedin) ? `<a href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>` : "");

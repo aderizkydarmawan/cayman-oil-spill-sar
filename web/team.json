@@ -1,10 +1,11 @@
 [
  {
   "nama": "Ade Rizky Darmawan",
-  "npm": "ISI_NPM",
+  "npm": "23083010080",
   "peran": "ISI_PERAN",
-  "linkedin": "ISI_URL_LINKEDIN",
-  "foto": "img/team/ade.jpg"
+  "linkedin": "https://www.linkedin.com/in/aderizkydarmawan/",
+  "foto": "img/team/ade.jpg",
+  "ketua": true
  },
  {
   "nama": "Arkananta Daniswara Handoyo",

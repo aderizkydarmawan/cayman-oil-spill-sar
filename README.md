@@ -159,7 +159,16 @@ Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-rev
 ## Live demo & tim
 
 - **Live demo:** `https://[nama-kelompok].vercel.app` (isi setelah deploy)
-- **Tim:** data anggota ada di `web/team.json`. Isi nama, NIM, peran, URL LinkedIn, dan foto (opsional, taruh di `web/`).
+- **Tim:** data ada di `web/team.json`, foto di `web/img/team/`.
+
+| Nama | NPM | LinkedIn |
+|---|---|---|
+| Ade Rizky Darmawan (Ketua) | 23083010080 | https://www.linkedin.com/in/aderizkydarmawan/ |
+| Arkananta Daniswara Handoyo | 23083010059 | https://www.linkedin.com/in/arkanadinata |
+| Muhammad Arsyad Alzam | 23083010082 | https://www.linkedin.com/in/arsyad-alzam/ |
+| Choirul Amin | 22083010050 | https://www.linkedin.com/in/choirul-amin-hvu |
+| Hana Titania Sastrian | 23083010056 | https://www.linkedin.com/in/hanatitaniaa/ |
+| Zaydan Arief Athallah | 23083010063 | https://www.linkedin.com/in/zaydan-arief-athallah-21ab03295 |
 
 ## Deploy ke Vercel
 
@@ -170,7 +179,7 @@ Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-rev
 
 ## Yang masih harus diisi tim
 
-- `web/team.json`: data anggota.
+- `web/team.json`: isi field `peran` tiap anggota.
 - Deploy Vercel dan repo GitHub. Tiap anggota wajib commit sendiri.
 - `docs/CONTRIBUTION_STATEMENT.md`: persentase kontribusi.
 - `docs/LAPORAN_DRAFT.md`: diubah ke format single column PDF, dengan nama file `Tubes_DL_Kelompok[No]_Oil_Spill_SAR.pdf`.
