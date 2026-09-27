@@ -46,6 +46,10 @@
         <input type="file" id="file" accept="image/*" />
       </div>
       <div class="threshold">
+        <label for="px">Resolusi piksel (meter/piksel, lihat metadata citra; Sentinel-1 IW GRD ≈ 10):</label>
+        <input type="number" id="px" min="0" step="0.1" placeholder="mis. 10" style="width:90px" />
+      </div>
+      <div class="threshold">
         <label for="thr">Threshold: <span id="thr-val">-</span></label>
         <input type="range" id="thr" min="0.05" max="0.95" step="0.05" />
       </div>

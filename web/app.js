@@ -95,7 +95,7 @@ async function runOnUrl(url, maskUrl, refDice) {
     for (let i = 0; i < S * S; i++) gt[i] = g[i] >= 128 ? 1 : 0;
   }
   const { prob, first, median } = await infer(gray, S);
-  last = { prob, gray, gt, refDice, S };
+  last = { prob, gray, gt, refDice, S, origW: img.naturalWidth, origH: img.naturalHeight };
   $("latency").textContent = `${median.toFixed(1)} ms (median 3 run setelah warm-up; run pertama ${first.toFixed(1)} ms)`;
   render();
   $("status").textContent = "selesai";
@@ -125,7 +125,15 @@ function render() {
   put("c-overlay", (i) => pred[i]
     ? [0.55 * gray[i] + 0.45 * 255, 0.55 * gray[i] + 0.45 * 38, 0.55 * gray[i] + 0.45 * 25]
     : [gray[i], gray[i], gray[i]]);
-  $("area").textContent = `${(100 * fg / (S * S)).toFixed(1)}% piksel (threshold ${threshold.toFixed(2)})`;
+  // Luas: jumlah piksel minyak × (resolusi)². Piksel dihitung di grid 256×256 → skala ke ukuran citra asli.
+  const px = parseFloat($("px").value);
+  let km2 = "";
+  if (px > 0 && last.origW) {
+    const pixelsOrig = (fg / (S * S)) * last.origW * last.origH;
+    const a = (pixelsOrig * px * px) / 1e6, total = (last.origW * last.origH * px * px) / 1e6;
+    km2 = ` ≈ ${a.toFixed(3)} km² dari ${total.toFixed(3)} km² area citra (${last.origW}×${last.origH} px @ ${px} m)`;
+  }
+  $("area").textContent = `${(100 * fg / (S * S)).toFixed(1)}% piksel (threshold ${threshold.toFixed(2)})${km2}`;
   $("fig-gt").hidden = !gt;
   $("dice-row").hidden = !gt;
   if (gt) {
@@ -143,6 +151,8 @@ $("thr").addEventListener("input", (e) => {
   $("thr-val").textContent = threshold.toFixed(2);
   render();
 });
+
+$("px").addEventListener("input", render);
 
 $("file").addEventListener("change", (e) => {
   const f = e.target.files[0];
