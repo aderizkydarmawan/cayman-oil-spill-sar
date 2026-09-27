@@ -178,8 +178,12 @@ fetch("team.json").then((r) => r.json()).then((team) => {
   team.forEach((m) => {
     const card = document.createElement("div");
     card.className = "member";
-    const img = m.foto ? `<img src="${m.foto}" alt="${m.nama}">` : `<div class="avatar">${m.nama.charAt(0)}</div>`;
-    card.innerHTML = `${img}<b>${m.nama}</b><span>NIM ${m.nim}</span><span class="muted">${m.peran}</span><a href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>`;
+    const ok = (v) => v && !String(v).startsWith("ISI_"); // placeholder belum diisi -> disembunyikan
+    const img = m.foto ? `<img src="${m.foto}" alt="Foto ${m.nama}" loading="lazy">` : `<div class="avatar">${m.nama.charAt(0)}</div>`;
+    card.innerHTML = `${img}<b>${m.nama}</b>` +
+      (ok(m.npm) ? `<span>NPM ${m.npm}</span>` : "") +
+      (ok(m.peran) ? `<span class="muted">${m.peran}</span>` : "") +
+      (ok(m.linkedin) ? `<a href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>` : "");
     box.appendChild(card);
   });
 });
