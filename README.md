@@ -179,8 +179,14 @@ Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-rev
 3. Project Vercel: `cayman` (team CAYMAN) → https://cayman-kelompok1.vercel.app. Setiap push ke `main` otomatis deploy ulang.
 4. `web/vercel.json` sudah mengatur header COOP/COEP untuk WASM multi-thread.
 
+## Laporan ilmiah
+
+- `docs/laporan/Tubes_DL_Kelompok01_Oil_Spill_SAR.pdf`: laporan final (single column, A4, spasi 1.15, margin 2.5 cm, 10 halaman).
+- `docs/laporan/Tubes_DL_Kelompok01_Oil_Spill_SAR.docx`: versi Word yang bisa diedit.
+- `docs/laporan/referensi.bib`: 14 referensi dalam format BibTeX, bisa diimpor ke Mendeley/Zotero.
+- `docs/laporan/build_laporan.py`: skrip penyusun laporan; semua angka diambil dari `outputs/`.
+
 ## Yang masih harus diisi tim
 
-- Deploy Vercel dan repo GitHub. Tiap anggota wajib commit sendiri.
-- `docs/CONTRIBUTION_STATEMENT.md`: persentase kontribusi.
-- `docs/LAPORAN_DRAFT.md`: diubah ke format single column PDF, dengan nama file `Tubes_DL_Kelompok01_Oil_Spill_SAR.pdf`.
+- Persentase kontribusi tiap anggota di Lampiran A laporan dan `docs/CONTRIBUTION_STATEMENT.md` (total 100%).
+- Tiap anggota wajib commit sendiri ke repo ini (undang sebagai collaborator).
