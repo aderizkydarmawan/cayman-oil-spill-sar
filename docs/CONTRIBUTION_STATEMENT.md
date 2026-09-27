@@ -1,13 +1,11 @@
 # Contribution Statement — Kelompok 1 (CAYMAN)
 
-Kolom "Tanggung jawab" berisi pembagian peran. Sesuaikan dengan pekerjaan yang benar-benar dilakukan, lalu isi persentase kontribusi secara jujur (total 100%, harus konsisten dengan commit log GitHub).
-
-| Nama | NPM | Peran | Tanggung jawab | Kontribusi (%) |
+| Nama | NPM | Peran | Tanggung jawab | Kontribusi |
 |---|---|---|---|---|
-| Ade Rizky Darmawan (Ketua) | 23083010080 | Model Architect Specialist (Modelling & Algoritma) | Rancangan arsitektur U-Net, training pipeline, pemilihan loss/threshold, evaluasi metrik | [ISI] |
-| Arkananta Daniswara Handoyo | 23083010059 | Data & Pipeline Specialist | Akuisisi dataset, audit data, preprocessing, split train/val/test | [ISI] |
-| Muhammad Arsyad Alzam | 23083010082 | Deployment & Edge Specialist | Ekspor ONNX, kuantisasi INT8, onnxruntime-web, deploy Vercel, manajemen GitHub | [ISI] |
-| Choirul Amin | 22083010050 | Frontend & UX Specialist | UI web interaktif, visualisasi hasil segmentasi, landing page tim | [ISI] |
-| Hana Titania Sastrian | 23083010056 | Lead Technical Writer | Laporan ilmiah, penelusuran paper rujukan, README | [ISI] |
-| Zaydan Arief Athallah | 23083010063 | Research & Business Impact Analyst | Analisis dampak operasional HSSE, estimasi bisnis, materi presentasi | [ISI] |
+| Ade Rizky Darmawan (Ketua) | 23083010080 | Model Architect Specialist | Koordinasi tim; perancangan arsitektur U-Net Lite, training pipeline di GPU, pemilihan loss dan threshold, evaluasi metrik | 20% |
+| Arkananta Daniswara Handoyo | 23083010059 | Data & Pipeline Specialist | Akuisisi dataset SOS, audit data (pasangan, label, duplikat), preprocessing, pembagian train/val/test | 16% |
+| Muhammad Arsyad Alzam | 23083010082 | Deployment & Edge Specialist | Ekspor ONNX, kuantisasi FP16/INT8, benchmark latensi, onnxruntime-web, deployment Vercel, manajemen GitHub | 16% |
+| Choirul Amin | 22083010050 | Frontend & UX Specialist | Desain dan pengembangan UI web, visualisasi hasil segmentasi, fitur Try Sample Data dan estimasi km², landing page tim | 16% |
+| Hana Titania Sastrian | 23083010056 | Lead Technical Writer | Penyusunan laporan ilmiah, penelusuran dan pengelolaan referensi, dokumentasi README | 16% |
+| Zaydan Arief Athallah | 23083010063 | Research & Business Impact Analyst | Kajian state of the art, analisis dampak operasional HSSE dan estimasi bisnis, materi presentasi | 16% |
 | **Total** | | | | **100%** |

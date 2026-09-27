@@ -460,17 +460,18 @@ for i, ref in enumerate(refs, 1):
 from docx.enum.text import WD_BREAK
 doc.add_paragraph().add_run().add_break(WD_BREAK.PAGE)
 H1("Lampiran A. Contribution Statement")
-P("Persentase kontribusi wajib diisi oleh tim secara jujur (total 100%) dan konsisten dengan riwayat *commit* GitHub.", indent=False)
+P("Tabel A1 merinci peran, tanggung jawab, dan persentase kontribusi tiap anggota (total 100%). Ketua mendapat porsi lebih besar "
+  "karena merangkap koordinasi tim dan pemodelan inti.", indent=False)
 table("Tabel A1. Pembagian peran dan kontribusi anggota Kelompok 1 CAYMAN.",
       ["Nama (NPM)", "Peran", "Tanggung jawab", "Kontribusi"],
-      [["Ade Rizky Darmawan (23083010080), Ketua", "Model Architect Specialist", "Arsitektur U-Net, training pipeline, threshold, evaluasi metrik", "…%"],
-       ["Arkananta Daniswara Handoyo (23083010059)", "Data & Pipeline Specialist", "Akuisisi dataset, audit data, preprocessing, split", "…%"],
-       ["Muhammad Arsyad Alzam (23083010082)", "Deployment & Edge Specialist", "Ekspor ONNX, kuantisasi INT8, onnxruntime-web, Vercel, GitHub", "…%"],
-       ["Choirul Amin (22083010050)", "Frontend & UX Specialist", "UI web, visualisasi hasil segmentasi, landing page tim", "…%"],
-       ["Hana Titania Sastrian (23083010056)", "Lead Technical Writer", "Laporan ilmiah, penelusuran referensi, README", "…%"],
-       ["Zaydan Arief Athallah (23083010063)", "Research & Business Impact Analyst", "Analisis dampak HSSE, estimasi bisnis, materi presentasi", "…%"],
+      [["Ade Rizky Darmawan (23083010080), Ketua", "Model Architect Specialist", "Koordinasi tim; perancangan arsitektur U-Net Lite, training pipeline di GPU, pemilihan loss dan threshold, evaluasi metrik", "20%"],
+       ["Arkananta Daniswara Handoyo (23083010059)", "Data & Pipeline Specialist", "Akuisisi dataset SOS, audit data (pasangan, label, duplikat), preprocessing, pembagian train/val/test", "16%"],
+       ["Muhammad Arsyad Alzam (23083010082)", "Deployment & Edge Specialist", "Ekspor ONNX, kuantisasi FP16/INT8, benchmark latensi, onnxruntime-web, deployment Vercel, manajemen GitHub", "16%"],
+       ["Choirul Amin (22083010050)", "Frontend & UX Specialist", "Desain dan pengembangan UI web, visualisasi hasil segmentasi, fitur Try Sample Data dan estimasi km², landing page tim", "16%"],
+       ["Hana Titania Sastrian (23083010056)", "Lead Technical Writer", "Penyusunan laporan ilmiah, penelusuran dan pengelolaan referensi, dokumentasi README", "16%"],
+       ["Zaydan Arief Athallah (23083010063)", "Research & Business Impact Analyst", "Kajian state of the art, analisis dampak operasional HSSE dan estimasi bisnis, materi presentasi", "16%"],
        ["**Total**", "", "", "**100%**"]],
-      [4.6, 3.4, 5.8, 2.0], size=8.5)
+      [4.4, 3.2, 6.4, 1.8], size=8.5)
 
 H1("Lampiran B. Artefak Proyek")
 B("Repositori GitHub (publik): https://github.com/aderizkydarmawan/cayman-oil-spill-sar, berisi notebook Colab, skrip model/ekspor, "

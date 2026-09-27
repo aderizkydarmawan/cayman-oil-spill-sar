@@ -188,5 +188,4 @@ Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-rev
 
 ## Yang masih harus diisi tim
 
-- Persentase kontribusi tiap anggota di Lampiran A laporan dan `docs/CONTRIBUTION_STATEMENT.md` (total 100%).
 - Tiap anggota wajib commit sendiri ke repo ini (undang sebagai collaborator).
