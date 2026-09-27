@@ -3,6 +3,12 @@
 ort.env.wasm.wasmPaths = "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/";
 
 const $ = (id) => document.getElementById(id);
+// Status + lampu indikator
+const statusEl = document.getElementById("status");
+new MutationObserver(() => {
+  const t = statusEl.textContent, led = $("led");
+  led.className = "led" + (t === "siap" || t === "selesai" ? " ready" : t.startsWith("inferensi") ? " busy" : "");
+}).observe(statusEl, { childList: true, characterData: true, subtree: true });
 let session, meta, threshold, last = null; // last = {prob, gray, gt, refDice}
 
 async function init() {
@@ -31,9 +37,13 @@ async function loadSamples() {
   const box = $("sample-buttons");
   samples.forEach((s, i) => {
     const b = document.createElement("button");
-    b.textContent = `Try Sample ${i + 1}`;
-    b.title = s.note || s.image;
-    b.onclick = () => runOnUrl(`samples/${s.image}`, s.mask ? `samples/${s.mask}` : null, s.dice_python);
+    b.innerHTML = `Try Sample ${i + 1}<small>${(s.note || "").split(" (")[0]}</small>`;
+    b.title = s.source || s.image;
+    b.onclick = () => {
+      box.querySelectorAll("button").forEach((x) => x.classList.remove("active"));
+      b.classList.add("active");
+      runOnUrl(`samples/${s.image}`, s.mask ? `samples/${s.mask}` : null, s.dice_python);
+    };
     box.appendChild(b);
   });
 }
@@ -96,7 +106,7 @@ async function runOnUrl(url, maskUrl, refDice) {
   }
   const { prob, first, median } = await infer(gray, S);
   last = { prob, gray, gt, refDice, S, origW: img.naturalWidth, origH: img.naturalHeight };
-  $("latency").textContent = `${median.toFixed(1)} ms (median 3 run setelah warm-up; run pertama ${first.toFixed(1)} ms)`;
+  $("latency").textContent = `${median.toFixed(0)} ms · median 3 run (run pertama ${first.toFixed(0)} ms)`;
   render();
   $("status").textContent = "selesai";
 }
@@ -121,7 +131,7 @@ function render() {
     if (gt) { if (pred[i] && gt[i]) tp++; else if (pred[i]) fp++; else if (gt[i]) fn++; }
   }
   put("c-input", (i) => [gray[i], gray[i], gray[i]]);
-  put("c-prob", (i) => { const p = prob[i]; return [255 * p, 60 * p, 255 * (1 - p) * 0.4]; });
+  put("c-prob", (i) => { const p = prob[i]; return [20 + 235 * Math.min(1, p * 1.6), 20 + 200 * Math.max(0, p - 0.4), 40 + 90 * (1 - p)]; });
   put("c-overlay", (i) => pred[i]
     ? [0.55 * gray[i] + 0.45 * 255, 0.55 * gray[i] + 0.45 * 38, 0.55 * gray[i] + 0.45 * 25]
     : [gray[i], gray[i], gray[i]]);
@@ -142,7 +152,7 @@ function render() {
     const dice = denom === 0 ? 1 : (2 * tp) / denom;
     $("dice").textContent = dice.toFixed(4);
     $("dice-ref").textContent = refDice != null && Math.abs(threshold - meta.threshold) < 1e-9
-      ? `(Python/ONNX Runtime pada sampel yang sama: ${refDice.toFixed(4)})` : "";
+      ? `referensi Python: ${refDice.toFixed(4)}` : "";
   }
 }
 
@@ -155,6 +165,7 @@ $("thr").addEventListener("input", (e) => {
 $("px").addEventListener("input", render);
 
 $("file").addEventListener("change", (e) => {
+  $("sample-buttons").querySelectorAll("button").forEach((x) => x.classList.remove("active"));
   const f = e.target.files[0];
   if (f) runOnUrl(URL.createObjectURL(f), null, null);
 });
