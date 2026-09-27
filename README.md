@@ -181,7 +181,7 @@ Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-rev
 
 ## Laporan ilmiah
 
-- `docs/laporan/Tubes_DL_Kelompok01_Oil_Spill_SAR.pdf`: laporan final (single column, A4, spasi 1.15, margin 2.5 cm, 10 halaman).
+- `docs/laporan/Tubes_DL_Kelompok01_Oil_Spill_SAR.pdf`: laporan final (cover + 10 halaman isi; single column, A4, spasi 1.15, margin 2.5 cm).
 - `docs/laporan/Tubes_DL_Kelompok01_Oil_Spill_SAR.docx`: versi Word yang bisa diedit.
 - `docs/laporan/referensi.bib`: 14 referensi dalam format BibTeX, bisa diimpor ke Mendeley/Zotero.
 - `docs/laporan/build_laporan.py`: skrip penyusun laporan; semua angka diambil dari `outputs/`.

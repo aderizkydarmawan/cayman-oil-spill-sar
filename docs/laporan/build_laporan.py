@@ -168,6 +168,44 @@ def page_number_footer(section):
     hr = hp.add_run("Tugas Besar Deep Learning · Kelompok 1 CAYMAN · Kasus 38"); hr.font.size = Pt(8.5); hr.italic = True
 
 
+# ================================== COVER =====================================
+def cover_line(text, size=12, bold=False, before=0, after=0, italic=False):
+    p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.paragraph_format.space_before = Pt(before); p.paragraph_format.space_after = Pt(after)
+    p.paragraph_format.line_spacing = 1.0
+    r = p.add_run(text); r.bold = bold; r.italic = italic; r.font.size = Pt(size)
+    return p
+
+cover_line("LAPORAN TUGAS BESAR", 16, True, before=24)
+cover_line("DEEP LEARNING", 14, True, after=18)
+cover_line("Deteksi dan Pemetaan Tumpahan Minyak pada Citra Sentinel-1 SAR", 13, True)
+cover_line("Menggunakan U-Net Ringan Terkuantisasi INT8", 13, True)
+cover_line("untuk Inferensi Edge di Browser", 13, True, after=4)
+cover_line("(Kasus 38: Marine Oil Spill Detection and Mapping via Satellite SAR)", 11, after=22)
+lp = doc.add_paragraph(); lp.alignment = WD_ALIGN_PARAGRAPH.CENTER; lp.paragraph_format.space_after = Pt(20)
+lp.add_run().add_picture(str(FIG / "logo_upnvjt.png"), width=Cm(5.2))
+cover_line("Disusun oleh:", 12, after=2)
+cover_line("Kelompok 1 — CAYMAN", 12, True, after=6)
+members = [("Ade Rizky Darmawan (Ketua)", "23083010080"), ("Arkananta Daniswara Handoyo", "23083010059"),
+           ("Muhammad Arsyad Alzam", "23083010082"), ("Choirul Amin", "22083010050"),
+           ("Hana Titania Sastrian", "23083010056"), ("Zaydan Arief Athallah", "23083010063")]
+mt = doc.add_table(rows=len(members), cols=2); mt.alignment = WD_TABLE_ALIGNMENT.CENTER; mt.autofit = False
+for i, (nm, npm) in enumerate(members):
+    for j, (val, w, al) in enumerate(((nm, 7.0, WD_ALIGN_PARAGRAPH.LEFT), ("NPM : " + npm, 4.2, WD_ALIGN_PARAGRAPH.LEFT))):
+        c = mt.cell(i, j); c.width = Cm(w); pp = c.paragraphs[0]; pp.alignment = al
+        pp.paragraph_format.space_after = Pt(1); pp.paragraph_format.line_spacing = 1.0
+        pp.add_run(val).font.size = Pt(11.5)
+cover_line("Dosen Pengampu:", 12, before=16)
+cover_line("Dr. I Gede Susrama Mas Diyasa, ST., MT.", 12, after=6)
+cover_line("Dosen Praktisi:", 12)
+cover_line("Kahpi Baiquni Arifani, S.Kom., M.Kom.", 12, after=26)
+for t in ("PROGRAM STUDI SAINS DATA", "FAKULTAS ILMU KOMPUTER", "UPN “VETERAN” JAWA TIMUR", "2026"):
+    cover_line(t, 12, True)
+
+# Section isi: nomor halaman mulai 1, header/footer hanya di sini
+sec = doc.add_section(WD_SECTION.NEW_PAGE)
+sec.header.is_linked_to_previous = False; sec.footer.is_linked_to_previous = False
+pg = OxmlElement("w:pgNumType"); pg.set(qn("w:start"), "1"); sec._sectPr.append(pg)
 page_number_footer(sec)
 
 # ============================== JUDUL & IDENTITAS ==============================
@@ -176,9 +214,6 @@ r = tp.add_run("Deteksi dan Pemetaan Tumpahan Minyak pada Citra Sentinel-1 SAR M
 r.bold = True; r.font.size = Pt(15)
 
 P("Kelompok 1 — **CAYMAN** · Kasus 38: *Marine Oil Spill Detection and Mapping via Satellite SAR*", align="center", size=10.5, space_after=2)
-P("Ade Rizky Darmawan (23083010080, Ketua) · Arkananta Daniswara Handoyo (23083010059) · Muhammad Arsyad Alzam (23083010082) · "
-  "Choirul Amin (22083010050) · Hana Titania Sastrian (23083010056) · Zaydan Arief Athallah (23083010063)", align="center", size=10, space_after=2)
-P("Program Studi S1 Sains Data, UPN \"Veteran\" Jawa Timur · Semester Ganjil 2026/2027", align="center", size=10, italic=True, space_after=2)
 P("Kode & dokumentasi: github.com/aderizkydarmawan/cayman-oil-spill-sar · Aplikasi web: cayman-kelompok1.vercel.app", align="center", size=9.5, space_after=10)
 
 # ================================== ABSTRAK ===================================
