@@ -178,9 +178,9 @@ def cover_line(text, size=12, bold=False, before=0, after=0, italic=False):
 
 cover_line("LAPORAN TUGAS BESAR", 16, True, before=24)
 cover_line("DEEP LEARNING", 14, True, after=18)
-cover_line("Deteksi dan Pemetaan Tumpahan Minyak pada Citra Sentinel-1 SAR", 13, True)
-cover_line("Menggunakan U-Net Ringan Terkuantisasi INT8", 13, True)
-cover_line("untuk Inferensi Edge di Browser", 13, True, after=4)
+cover_line("Perbandingan Machine Learning dan Deep Learning untuk Deteksi,", 13, True)
+cover_line("Pemetaan Poligon, dan Perencanaan Respons Tumpahan Minyak", 13, True)
+cover_line("pada Citra Sentinel-1 SAR di Browser", 13, True, after=4)
 cover_line("(Kasus 38: Marine Oil Spill Detection and Mapping via Satellite SAR)", 11, after=22)
 lp = doc.add_paragraph(); lp.alignment = WD_ALIGN_PARAGRAPH.CENTER; lp.paragraph_format.space_after = Pt(20)
 lp.add_run().add_picture(str(FIG / "logo_upnvjt.png"), width=Cm(5.2))
@@ -210,7 +210,7 @@ page_number_footer(sec)
 
 # ============================== JUDUL & IDENTITAS ==============================
 tp = doc.add_paragraph(); tp.alignment = WD_ALIGN_PARAGRAPH.CENTER; tp.paragraph_format.space_after = Pt(6)
-r = tp.add_run("Deteksi dan Pemetaan Tumpahan Minyak pada Citra Sentinel-1 SAR Menggunakan U-Net Ringan Terkuantisasi INT8 untuk Inferensi Edge di Browser")
+r = tp.add_run("Perbandingan Machine Learning dan Deep Learning untuk Deteksi, Pemetaan Poligon, dan Perencanaan Respons Tumpahan Minyak pada Citra Sentinel-1 SAR di Browser")
 r.bold = True; r.font.size = Pt(15)
 
 P("Kelompok 1 — **CAYMAN** · Kasus 38: *Marine Oil Spill Detection and Mapping via Satellite SAR*", align="center", size=10.5, space_after=2)
@@ -222,34 +222,34 @@ ab.paragraph_format.left_indent = Cm(0.8); ab.paragraph_format.right_indent = Cm
 rr = ab.add_run("Abstrak — "); rr.bold = True; rr.font.size = Pt(10)
 add_runs(ab, (
     "Tumpahan minyak dari fasilitas migas lepas pantai, pipa bawah laut, dan kapal tanker harus dipetakan secepat mungkin agar respons "
-    "HSSE tepat sasaran. Penelitian ini membangun model segmentasi semantik biner berbasis U-Net ringan (1,94 juta parameter) untuk "
-    "memetakan area tumpahan minyak pada citra Sentinel-1 SAR dari dataset SOS (2.850 patch latih, 504 validasi, 839 uji). Audit data "
-    "dilakukan sebelum pelatihan, meliputi pasangan citra–mask, nilai label, dan duplikat termasuk hasil rotasi/flip. Model dilatih di GPU Tesla T4 "
-    "selama 10 menit dengan loss BCE+Dice, threshold dipilih pada data validasi, dan test set hanya dipakai sekali. Pada 839 citra uji, model "
-    "mencapai Dice/F1 0,855, IoU 0,746, precision 0,806, recall 0,910, dan PR-AUC 0,936, jauh di atas baseline dark-spot thresholding "
-    "(Dice 0,726). Kuantisasi INT8 statis (QDQ) memperkecil model dari 7,77 MB menjadi 2,01 MB dengan penurunan Dice hanya 0,0002, dan model "
-    "berjalan sepenuhnya di browser melalui onnxruntime-web dengan latensi 65–74 ms per patch 256×256 pada laptop uji. Dibandingkan CBD-Net pada "
-    "subset Sentinel-1 dataset yang sama (F1 87,87%), F1 model ini 2,4 poin lebih rendah, tetapi model jauh lebih ringan dan dapat "
-    "dioperasikan tanpa server GPU."), size=10)
+    "HSSE tepat sasaran. Penelitian ini membandingkan dua model *machine learning* (Random Forest dan LightGBM dengan 13 fitur tekstur "
+    "buatan) dan dua model *deep learning* (U-Net Lite yang dilatih dari nol dan DeepLabV3+ MobileNetV2 pralatih) untuk segmentasi tumpahan "
+    "minyak pada citra Sentinel-1 SAR dataset SOS (2.850 latih, 504 validasi, 839 uji). Semua model memakai split, aturan threshold "
+    "(dipilih pada data validasi), dan metrik yang sama. Pada data uji, DeepLabV3+ mencapai Dice 0,867 dan IoU 0,765, disusul U-Net Lite "
+    "(0,855), LightGBM (0,806), dan Random Forest (0,804), seluruhnya di atas baseline *dark-spot* (0,726). Model DL unggul 5–6 poin Dice "
+    "terutama karena precision yang lebih tinggi, sedangkan model ML sangat kecil (0,24–1,8 MB). Kelima model diekspor ke ONNX (DL "
+    "dikuantisasi INT8 tanpa penurunan Dice yang berarti) dan dijalankan di browser. Aplikasi web juga mengubah mask menjadi poligon per "
+    "slick, mensimulasikan arah dan laju penyebaran (drift 3% angin + arus, penyebaran Fay dan difusi Okubo), memperkirakan panjang *oil "
+    "boom*, serta menghitung efisiensi biaya dan penurunan risiko HSSE akibat berkurangnya patroli lapangan."), size=10)
 kw = doc.add_paragraph(); kw.paragraph_format.left_indent = Cm(0.8); kw.paragraph_format.right_indent = Cm(0.8); kw.paragraph_format.space_after = Pt(8)
 r = kw.add_run("Kata kunci: "); r.bold = True; r.font.size = Pt(10)
-add_runs(kw, "oil spill, SAR, Sentinel-1, segmentasi semantik, U-Net, kuantisasi INT8, edge AI, onnxruntime-web, HSSE.", size=10, italic_all=True)
+add_runs(kw, "oil spill, SAR, Sentinel-1, segmentasi semantik, random forest, LightGBM, U-Net, DeepLabV3+, edge AI, oil boom, HSSE.", size=10, italic_all=True)
 
 # ================================ PENDAHULUAN =================================
 H1("1. Pendahuluan")
 P("Tumpahan minyak adalah salah satu ancaman terbesar bagi ekosistem laut, dan sebagian besar terkait aktivitas industri migas lepas "
   "pantai: semburan dari rig pengeboran, kecelakaan tanker, hingga buangan rutin kapal [6]. Pada pilar **HSSE** (*Health, Safety, Security "
-  "and Environment*), tim respons membutuhkan informasi lokasi dan luas tumpahan secepat mungkin untuk menentukan penempatan *boom*, "
-  "*skimmer*, dan kapal penanggulangan [1]. Kegagalan mendeteksi dini berisiko memperluas pencemaran pesisir dan berujung pada sanksi "
-  "maupun penghentian izin operasi fasilitas.")
+  "and Environment*), tim respons membutuhkan lokasi, luas, dan arah gerak tumpahan secepat mungkin untuk menentukan penempatan *oil boom*, "
+  "*skimmer*, dan kapal penanggulangan [1]. Pengecekan manual melalui patroli udara atau laut mahal dan memaparkan personel pada uap "
+  "hidrokarbon serta risiko kecelakaan.")
 P("Radar apertur sintetis (SAR) menjadi sensor utama pemantauan tumpahan minyak karena bekerja siang–malam dan menembus awan. Lapisan "
-  "minyak meredam gelombang kapiler sehingga tampak sebagai area gelap pada citra SAR [1]. Kemampuan malam hari penting: Liao dkk. "
-  "menemukan lebih dari 80% kejadian tumpahan di Teluk Jiaozhou terjadi pada malam hari, terutama dari buangan ilegal kapal [8]. Tantangan "
-  "utamanya adalah fenomena *look-alike* (angin lemah, lapisan biogenik) yang juga tampak gelap [2], [4], [7], serta interpretasi visual "
-  "manual yang lambat dan rentan bias [7].")
-P("Tabel 1 merangkum penelitian lima tahun terakhir yang menjadi rujukan. Angka antarpenelitian umumnya **tidak dapat dibandingkan "
-  "langsung** karena dataset, jumlah kelas, dan protokol evaluasinya berbeda; pembanding yang setara hanya Zhu dkk. [3], yang "
-  "memperkenalkan dataset SOS yang juga kami gunakan.")
+  "minyak meredam gelombang kapiler sehingga tampak sebagai area gelap pada citra SAR [1]. Liao dkk. menemukan lebih dari 80% kejadian "
+  "tumpahan di Teluk Jiaozhou terjadi pada malam hari [8]. Tantangan utamanya adalah fenomena *look-alike* (angin lemah, lapisan biogenik) "
+  "yang juga tampak gelap [2], [4], [7]. Tabel 1 merangkum penelitian rujukan; angka antarpenelitian umumnya **tidak dapat dibandingkan "
+  "langsung** karena dataset dan protokolnya berbeda, kecuali Zhu dkk. [3] yang memperkenalkan dataset SOS yang juga kami gunakan.")
+P("Kontribusi proyek ini: (1) *pipeline* yang diaudit, termasuk pemeriksaan kebocoran antar split; (2) perbandingan adil model ML dan "
+  "DL pada protokol yang sama, termasuk uji lintas sensor; (3) aplikasi web dengan inferensi di sisi klien untuk kelima model, poligon per "
+  "slick, dan GeoJSON; serta (4) simulasi arah dan laju penyebaran, estimasi kebutuhan *oil boom*, dan analisis biaya serta risiko HSSE.")
 table("Tabel 1. Ringkasan penelitian rujukan (state of the art).",
       ["Rujukan", "Data", "Metode", "Hasil utama (sesuai paper)"],
       [["Zhu dkk., 2022 [3]", "SOS: ALOS PALSAR & Sentinel-1A", "CBD-Net (multiskala, scSE, supervisi tepi)", "Sentinel-1: mIoU 83,42%, F1 87,87%"],
@@ -260,176 +260,153 @@ table("Tabel 1. Ringkasan penelitian rujukan (state of the art).",
        ["Das dkk., 2024 [9]", "SAR, 5 kelas", "U-Net multi-backbone (EfficientNet-B3)", "mIoU 76,53%; IoU minyak 62,08%"],
        ["Petalas dkk., 2025 [10]", "Sentinel-1, Laut Aegea", "U-Net operasional + model dispersi", "IoU kelas minyak 0,30"]],
       [3.4, 3.6, 4.4, 4.6], size=8.5)
-P("Sebagian besar penelitian tersebut berfokus pada akurasi dengan model berat yang dijalankan di GPU; aspek efisiensi dan penyebaran "
-  "ke perangkat pengguna jarang dibahas. Kontribusi proyek ini adalah: (1) *pipeline* yang diaudit, termasuk pemeriksaan kebocoran antar "
-  "split; (2) U-Net ringan yang dikuantisasi INT8 menjadi 2 MB dengan penurunan akurasi yang dapat diabaikan; (3) aplikasi web dengan "
-  "inferensi sepenuhnya di sisi klien, tombol *Try Sample Data*, dan estimasi luas tumpahan (km²); serta (4) perbandingan jujur terhadap "
-  "tolok ukur SOS [3].")
-
 # ================================= METODOLOGI =================================
 H1("2. Metodologi")
-H2("2.1 Dataset dan audit data")
-P("Dataset yang digunakan adalah *Deep-SAR Oil Spill* (SOS) [3], diunduh dari Kaggle melalui pustaka kagglehub [13] (lisensi CC BY 4.0 "
-  "sesuai halaman sumber). SOS berisi 8.070 pasangan citra–mask PNG 256×256 piksel dari dua sensor: ALOS PALSAR (Teluk Meksiko; 3.101 latih "
-  "/ 776 uji) dan Sentinel-1A polarisasi VV (Teluk Persia; 3.354 latih / 839 uji). Sebelum pelatihan dilakukan audit menyeluruh dengan temuan berikut:")
-B("Semua 8.070 pasangan cocok berdasarkan nama berkas; tidak ada citra tanpa mask, dimensi tidak cocok, NaN/Inf, maupun citra konstan.")
-B("Citra tersimpan sebagai RGB, tetapi ketiga kanalnya identik (100%), sehingga model menggunakan **1 kanal**.")
-B("Label uji murni bernilai 0/255, sedangkan label latih memiliki 2,2–2,5% piksel bernilai antara (pada 44–53% berkas). Label "
-  "dibinerkan dengan aturan piksel ≥128 = minyak.")
-B("Tidak ada duplikat eksak (md5) di dalam maupun antar split. Pemeriksaan *near-duplicate* dengan *average hash* terhadap 8 transformasi "
-  "rotasi/flip menemukan 9 citra uji per sensor yang mirip citra latih; pemeriksaan visual menunjukkan tekstur speckle-nya berbeda "
-  "(bukan salinan). Dampaknya diuji pada analisis sensitivitas (Subbab 3.2).")
-B("Zhu dkk. menyebutkan bahwa augmentasi (*cropping*, rotasi, penambahan noise) dilakukan sebelum data dibagi 8:2 [3], sehingga korelasi "
-  "spasial antara patch latih dan uji tidak dapat sepenuhnya disingkirkan. Hal ini dicatat sebagai batasan.")
-figure(FIG / "sample_pairs_grid.png", 14.5, "Gambar 1. Contoh pasangan citra SAR, mask, dan overlay (merah = minyak) per split dan sensor hasil audit.")
+H2("2.1 Dataset, audit, dan split")
+P("Dataset *Deep-SAR Oil Spill* (SOS) [3] diunduh dari Kaggle melalui kagglehub [13] (lisensi CC BY 4.0). SOS berisi 8.070 pasangan "
+  "citra–mask PNG 256×256 dari ALOS PALSAR (Teluk Meksiko; 3.101 latih / 776 uji) dan Sentinel-1A VV (Teluk Persia; 3.354 latih / 839 "
+  "uji). Audit menemukan: semua pasangan cocok tanpa NaN/Inf; ketiga kanal RGB identik sehingga model memakai 1 kanal; label latih memiliki "
+  "2,2–2,5% piksel bernilai antara sehingga dibinerkan dengan aturan ≥128; tidak ada duplikat eksak, dan pemeriksaan *near-duplicate* "
+  "dengan *average hash* terhadap 8 rotasi/flip hanya menemukan 9 citra uji yang mirip citra latih (dampaknya diuji di Subbab 3.1).")
+P("Eksperimen memakai **Sentinel-1** (sampel terbanyak, label ambigu lebih sedikit, data terbuka). Data latih dibagi 2.850 latih dan 504 "
+  "validasi (*seed* 42) dengan mengelompokkan komponen *near-duplicate* agar tidak terpisah; set uji 839 citra hanya dipakai untuk evaluasi "
+  "akhir. Citra dinormalisasi *z-score* x' = (x/255 − 0,3834)/0,2020 dengan statistik dari data latih. Augmentasi (8 rotasi/flip identik "
+  "untuk citra dan mask, jitter kecerahan ±10%) hanya pada data latih.")
+figure(FIG / "pipeline.png", 15.0, "Gambar 1. Alur sistem, dari data hingga aplikasi web.")
 
-H2("2.2 Pemilihan sensor, split, dan preprocessing")
-P("Eksperimen utama menggunakan **Sentinel-1** karena jumlah sampelnya terbanyak, file dengan label ambigu lebih sedikit (1.468 vs 1.654), "
-  "sesuai dengan katalog kasus, dan datanya tersedia terbuka sehingga relevan untuk operasional. Data latih dibagi menjadi 2.850 latih dan "
-  "504 validasi (15%, *seed* 42). Karena ID berkas terbukti tidak berurutan menurut *scene* (jarak Hamming antar-ID berurutan sama dengan "
-  "pasangan acak, median 126), pengelompokan dilakukan berdasarkan komponen *near-duplicate* agar citra yang mirip tidak terpisah ke latih "
-  "dan validasi. Set uji (839 citra) hanya dipakai sekali untuk evaluasi akhir. Proporsi piksel minyak adalah 29,3% (latih), 29,4% "
-  "(validasi), dan 34,7% (uji).")
-P("Preprocessing: kanal R (= grayscale), ukuran asli 256×256 tanpa resize, normalisasi *z-score* x' = (x/255 − 0,3834)/0,2020 dengan "
-  "statistik dari subset latih saja. Augmentasi hanya diterapkan pada data latih: 8 transformasi dihedral (rotasi 90° dan flip) yang "
-  "identik untuk citra dan mask, serta jitter kecerahan/kontras ±10% khusus citra. Konfigurasi preprocessing disimpan agar inferensi web "
-  "memakai langkah yang sama persis.")
-figure(FIG / "pipeline.png", 15.5, "Gambar 2. Diagram alur sistem, dari data hingga inferensi di browser.")
+H2("2.2 Model Machine Learning dan Deep Learning")
+B("**Random Forest** [15] dan **LightGBM** [16] mengklasifikasi setiap piksel dari 13 fitur buatan tangan: intensitas; rata-rata lokal "
+  "5/11/21/41 piksel; simpangan baku lokal 5/11/21 (tekstur); gradien Sobel (tepi); kontras rata-rata 5 vs 41; selisih terhadap rata-rata "
+  "citra; serta minimum dan maksimum lokal 11 piksel. Fitur ditulis sebagai modul PyTorch agar identik di notebook dan browser. Model "
+  "dilatih pada 300 piksel acak per citra latih (855.000 baris) dengan ukuran dibatasi agar ringan di web: RF 20 pohon kedalaman 12, "
+  "LightGBM 100 pohon 31 daun.")
+B("**U-Net Lite** adalah U-Net [11] 4 level dengan kanal 16–256 (1,94 juta parameter) yang dilatih dari nol. **DeepLabV3+** [17] memakai "
+  "*encoder* MobileNetV2 [18] pralatih ImageNet (4,38 juta parameter; bobot kanal pertama dijumlahkan menjadi 1 kanal). Keduanya dilatih "
+  "dengan resep yang sama: loss 0,5·BCE + 0,5·Dice, AdamW (lr 10⁻³, *weight decay* 10⁻⁴), jadwal *cosine* 40 epoch, *batch* 16, dan "
+  "*mixed precision* pada GPU Tesla T4 (Google Colab). Checkpoint terbaik dipilih dari Dice validasi.")
+P("Threshold setiap model dipilih melalui *sweep* 0,20–0,80 pada data **validasi**. Metrik utama adalah Dice (F1 piksel), IoU, precision, "
+  "recall, dan PR-AUC dengan agregasi global (TP/FP/FN/TN dijumlahkan dari semua piksel uji). Baseline *dark-spot thresholding* (blur 7×7, "
+  "intensitas < 70; ambang dipilih pada data latih) disertakan, dan generalisasi lintas sensor diuji pada 776 citra PALSAR.")
 
-H2("2.3 Arsitektur model dan pelatihan")
-P("Model utama adalah **U-Net Lite**, varian U-Net [11] dengan 4 level *encoder–decoder* dan jumlah kanal 16–32–64–128–256 "
-  "(±1,94 juta parameter, 7,8 MB dalam FP32). Setiap blok terdiri atas dua lapis Conv 3×3–BatchNorm–ReLU; *downsampling* memakai MaxPool "
-  "2×2, *upsampling* memakai ConvTranspose 2×2, dan fitur *encoder* digabungkan melalui *skip connection*. Keluaran berupa satu peta logit "
-  "256×256. Setelah diekspor, graf hanya berisi operator Conv, ConvTranspose, MaxPool, Relu, dan Concat, yang semuanya didukung "
-  "onnxruntime-web.")
-P("Pelatihan menggunakan loss 0,5·BCE + 0,5·Soft Dice untuk menangani ketidakseimbangan kelas, optimizer AdamW (lr 10⁻³, *weight decay* "
-  "10⁻⁴) dengan jadwal *cosine* selama 40 epoch, *batch* 16, dan *mixed precision* (AMP) pada GPU Tesla T4 di Google Colab. Checkpoint "
-  "terbaik dipilih berdasarkan Dice validasi (epoch 37, Dice 0,8640); total waktu pelatihan 10,0 menit. Threshold biner dipilih melalui "
-  "*sweep* 0,20–0,80 pada data **validasi**, menghasilkan 0,45 (Dice validasi 0,8641).")
-
-H2("2.4 Evaluasi dan baseline")
-P("Metrik yang digunakan adalah Dice (setara F1 piksel), IoU, precision, recall, dan PR-AUC piksel. Agregasi utama bersifat **global**: "
-  "TP/FP/FN/TN dijumlahkan dari seluruh piksel semua citra uji, lalu metrik dihitung. Metrik *macro* (rata-rata per citra) juga "
-  "dilaporkan. Untuk perbandingan dengan [3], dihitung pula mIoU dua kelas (rata-rata IoU minyak dan latar). Dua baseline disertakan: (a) "
-  "*mask* kosong (selalu memprediksi \"bukan minyak\") untuk menunjukkan bahwa akurasi piksel menyesatkan pada data tidak seimbang, dan (b) "
-  "*dark-spot thresholding* klasik (blur 7×7, intensitas < 70; ambang dipilih pada data latih). Generalisasi lintas sensor diuji terpisah "
-  "pada 776 citra uji PALSAR yang tidak pernah dilihat model.")
-
-H2("2.5 Optimasi Edge AI")
-P("Model diekspor ke ONNX (opset 17) lalu dibuat dua varian teroptimasi: **FP16** (bobot dan komputasi 16-bit, I/O tetap FP32) dan "
-  "**INT8** melalui kuantisasi statis format QDQ per-kanal [12] dengan kalibrasi 200 citra latih. Varian untuk web dipilih dengan aturan "
-  "yang ditetapkan sebelumnya: varian terkecil yang penurunan Dice **validasinya** ≤ 0,005 dibandingkan FP32. Aplikasi web berupa halaman "
-  "statis di Vercel yang menjalankan model dengan onnxruntime-web [14] berbasis WebAssembly; header COOP/COEP diaktifkan agar WASM dapat "
-  "berjalan multi-thread. Dengan demikian, citra pengguna tidak pernah dikirim ke server.")
+H2("2.3 Edge AI, poligon, dan simulasi respons")
+P("Model DL diekspor ke ONNX lalu dikuantisasi INT8 statis (QDQ per-kanal) [12] dengan kalibrasi 200 citra latih; varian web adalah varian "
+  "terkecil yang penurunan Dice validasinya ≤ 0,005. Model ML diekspor sebagai satu graf ONNX (graf fitur + *ensemble* pohon). Aplikasi "
+  "web statis di Vercel menjalankan kelima model dengan onnxruntime-web [14] (WebAssembly multi-thread), sehingga citra pengguna tidak "
+  "pernah dikirim ke server. Setelah inferensi, mask dipecah menjadi komponen terhubung, batas luar tiap slick ditelusuri lalu "
+  "disederhanakan dengan Douglas–Peucker, sehingga diperoleh luas, keliling, dan poligon GeoJSON per slick.")
+P("Simulasi skenario (*what-if*) memproyeksikan poligon ke depan. **Drift**: kecepatan slick = 3% kecepatan angin + 100% arus permukaan, "
+  "aturan praktis yang juga dipakai model trajektori NOAA GNOME [19]. **Penyebaran**: persamaan Fay [20] rezim gravitasi-viskos "
+  "A ∝ ∛(Δ·g·V²/√ν)·√t, dengan volume V = luas × ketebalan menurut kode penampakan Bonn Agreement [21], ditambah difusi turbulen "
+  "ΔA = 8πK·t dengan K dari hukum skala Okubo [22] (K = 0,0103 × L pangkat 1,15, dalam cm²/s, L = diameter slick dalam cm). **Kebutuhan oil boom** = 1,3 × keliling *convex hull* slick "
+  "saat tim tiba, dengan peringatan bila kecepatan relatif > 0,7 knot karena boom penahan mulai bocor [23].")
 
 # ============================ HASIL DAN PEMBAHASAN ============================
 H1("3. Hasil dan Pembahasan")
-H2("3.1 Proses pelatihan")
-figure(FIG / "training_curves.png", 15.5, "Gambar 3. Kurva loss (kiri) serta Dice/IoU validasi pada threshold 0,5 (kanan) selama 40 epoch.")
-P("Loss latih dan validasi turun bersamaan dan Dice validasi naik stabil hingga sekitar 0,86 tanpa tanda *overfitting* yang kuat "
-  "(Gambar 3). Kurva yang masih sedikit naik di akhir menunjukkan bahwa pelatihan lebih lama berpotensi memberi peningkatan kecil.")
+H2("3.1 Perbandingan model pada set uji")
+table("Tabel 2. Hasil pada set uji Sentinel-1 (839 citra, agregasi global) dan uji lintas sensor PALSAR (776 citra).",
+      ["Model", "Thr", "Dice/F1", "IoU", "Precision", "Recall", "PR-AUC", "Dice PALSAR"],
+      [["Baseline dark-spot", "–", "0,7259", "0,5698", "0,6669", "0,7964", "–", "0,6410"],
+       ["ML: Random Forest", "0,40", "0,8036", "0,6717", "0,7721", "0,8377", "0,8981", "0,7506"],
+       ["ML: LightGBM", "0,35", "0,8056", "0,6745", "0,7568", "0,8612", "0,9020", "0,7490"],
+       ["DL: U-Net Lite", "0,45", "0,8547", "0,7462", "0,8058", "**0,9099**", "0,9361", "0,7774"],
+       ["**DL: DeepLabV3+ MobileNetV2**", "0,50", "**0,8667**", "**0,7648**", "**0,8344**", "0,9016", "**0,9479**", "**0,7975**"]],
+      [4.6, 1.0, 1.6, 1.4, 1.6, 1.5, 1.5, 1.8], size=8.5, bold_rows=(4,),
+      note="Thr = threshold yang dipilih pada data validasi. Baseline mask kosong mencapai akurasi piksel 65,3% tanpa mendeteksi minyak "
+           "sama sekali, sehingga akurasi tidak dipakai sebagai metrik utama. Tanpa 9 citra near-duplicate, Dice U-Net Lite hanya turun 0,0008.")
+P("Kedua model DL mengungguli model ML sekitar 5–6 poin Dice dan 7–9 poin IoU, dan semua model jauh di atas baseline (Tabel 2, "
+  "Gambar 2). Selisih terbesar ada pada **precision**: fitur lokal model ML menandai hampir semua area gelap, termasuk tepi slick dan "
+  "bercak *look-alike*, sedangkan DL memanfaatkan konteks spasial yang lebih luas. Model ML tetap 8 poin di atas baseline dengan ukuran "
+  "yang sangat kecil. *Feature importance* menunjukkan fitur terpenting adalah minimum lokal 11 piksel, rata-rata lokal 11 piksel, dan "
+  "selisih terhadap rata-rata citra, yaitu ukuran kegelapan relatif yang memang menjadi ciri slick pada SAR [1].")
+P("DeepLabV3+ pralatih unggul atas U-Net Lite pada Dice (+1,2 poin), precision (+2,9 poin), dan generalisasi lintas sensor (+2,0 poin), "
+  "sedangkan U-Net Lite sedikit lebih tinggi recall-nya. Hal ini menunjukkan manfaat *transfer learning* meski citra SAR berbeda domain "
+  "dengan ImageNet. Recall semua model DL ≈ 0,90–0,91; untuk peringatan dini HSSE sifat ini lebih aman karena tumpahan yang terlewat lebih "
+  "mahal dampaknya daripada alarm palsu yang dapat diverifikasi analis.")
+figure(FIG / "model_predictions_side_by_side.png", 15.5, "Gambar 2. Prediksi kelima model pada citra uji mudah, tipikal, sulit, dan tanpa minyak (merah = minyak).")
 
-H2("3.2 Metrik segmentasi pada set uji")
-table("Tabel 2. Hasil pada set uji Sentinel-1 (839 citra, threshold 0,45, agregasi global).",
-      ["Model", "Dice/F1", "IoU", "Precision", "Recall", "PR-AUC", "Akurasi"],
-      [["**U-Net Lite (FP32)**", "**0,8547**", "**0,7462**", "0,8058", "**0,9099**", "**0,9361**", "0,8926"],
-       ["U-Net Lite, tanpa 9 near-duplicate (830 citra)", "0,8539", "0,7451", "0,8054", "0,9087", "0,9351", "0,8925"],
-       ["Baseline dark-spot thresholding", "0,7259", "0,5698", "0,6669", "0,7964", "–", "0,7912"],
-       ["Baseline mask kosong", "0,0000", "0,0000", "0,0000", "0,0000", "–", "0,6528"],
-       ["*Lintas sensor:* U-Net Lite pada uji PALSAR (776)", "0,7774", "0,6358", "0,7276", "0,8344", "0,8680", "0,9197"],
-       ["*Lintas sensor:* dark-spot pada uji PALSAR", "0,6410", "0,4717", "0,8651", "0,5092", "–", "0,9042"]],
-      [5.6, 1.6, 1.5, 1.7, 1.5, 1.5, 1.6], size=8.5, bold_rows=(0,),
-      note="Dice macro (rata-rata per citra) U-Net Lite = 0,7609; IoU macro = 0,6508. Baseline mask kosong mencapai akurasi 65,3% "
-           "tanpa mendeteksi satu piksel minyak pun, sehingga akurasi tidak dipakai sebagai metrik utama.")
-P("U-Net Lite unggul jauh atas kedua baseline: Dice naik 0,129 dan IoU naik 0,176 dibandingkan *dark-spot thresholding*. Membuang 9 citra "
-  "*near-duplicate* hanya menurunkan Dice 0,0008, sehingga hasil tidak didorong oleh kebocoran data. Recall (0,910) lebih tinggi daripada "
-  "precision (0,806): model cenderung sedikit melebihkan batas tumpahan (Gambar 4). Dari seluruh piksel laut, 11,7% salah ditandai sebagai "
-  "minyak, sedangkan dari seluruh piksel minyak hanya 9,0% yang terlewat. Untuk sistem peringatan dini HSSE, sifat ini lebih aman karena "
-  "tumpahan yang terlewat lebih mahal dampaknya daripada alarm palsu yang dapat diverifikasi analis.")
-figure(FIG / "confusion_matrix_test.png", 6.0, "Gambar 4. Confusion matrix piksel pada set uji Sentinel-1 (dinormalisasi per baris).")
-
-H2("3.3 Perbandingan dengan tolok ukur dataset SOS")
+H2("3.2 Perbandingan dengan tolok ukur dataset SOS")
 table("Tabel 3. Perbandingan pada subset uji Sentinel-1 dataset SOS.",
       ["Model", "mIoU (%)", "F1 (%)", "Recall (%)", "Precision (%)", "Ukuran model"],
       [["U-Net [3]", "81,46", "86,10", "81,22", "85,61", "tidak dilaporkan"],
-       ["D-LinkNet [3]", "82,32", "87,08", "85,22", "85,22", "tidak dilaporkan"],
        ["DeepLabv3 [3]", "82,94", "87,70", "84,76", "88,08", "tidak dilaporkan"],
        ["CBD-Net [3]", "83,42", "87,87", "87,32", "91,20", "tidak dilaporkan"],
-       ["**U-Net Lite (ours, FP32)**", "**79,46**", "**85,47**", "**90,99**", "**80,58**", "**7,77 MB**"],
-       ["**U-Net Lite (ours, INT8)**", "–", "**85,45**", "**90,90**", "**80,62**", "**2,01 MB**"]],
-      [4.6, 1.9, 1.7, 1.9, 2.1, 2.8], size=8.5, bold_rows=(4, 5),
-      note="Nilai [3] dikutip dari Tabel III paper tersebut (threshold 0,5; cara agregasi tidak dirinci). mIoU kami = rata-rata IoU minyak "
-           "(0,7462) dan IoU latar (0,8429). Perbedaan protokol membuat perbandingan ini bersifat indikatif.")
-P("Pada subset yang sama, F1 U-Net Lite 0,6 poin di bawah U-Net standar dan 2,4 poin di bawah CBD-Net [3]. Selisih ini wajar karena "
-  "model kami sangat ringan, tidak memakai *encoder* pralatih, dan tidak memakai modul *attention* maupun supervisi tepi seperti CBD-Net. "
-  "Sebaliknya, recall model kami (91,0%) adalah yang tertinggi di Tabel 3, dan model INT8 berukuran hanya 2 MB sehingga dapat dijalankan "
-  "langsung di browser. *Trade-off* ini sesuai dengan tujuan proyek: model yang cukup akurat untuk *screening* dan murah dioperasikan.")
+       ["LightGBM (ours)", "73,43", "80,56", "86,12", "75,68", "0,24 MB"],
+       ["U-Net Lite (ours, INT8)", "79,46", "85,45", "90,90", "80,62", "2,01 MB"],
+       ["**DeepLabV3+ MobileNetV2 (ours, INT8)**", "**81,23**", "**86,73**", "**90,16**", "**83,44**", "**4,84 MB**"]],
+      [5.0, 1.8, 1.6, 1.8, 2.0, 2.6], size=8.5, bold_rows=(5,),
+      note="Nilai [3] dikutip dari Tabel III paper tersebut (threshold 0,5; cara agregasi tidak dirinci). mIoU kami = rata-rata IoU minyak dan "
+           "IoU latar; recall/precision DeepLabV3+ dari model PyTorch, F1 dari varian INT8. Perbedaan protokol membuat perbandingan ini indikatif.")
+P("DeepLabV3+ mempersempit selisih F1 dengan CBD-Net [3] dari 2,4 poin (U-Net Lite) menjadi 1,1 poin, dengan model INT8 4,84 MB yang berjalan "
+  "di browser. Recall model DL kami (90–91%) adalah yang tertinggi pada Tabel 3.")
 
-H2("3.4 Efisiensi komputasi (Green/Edge AI)")
-table("Tabel 4. Ukuran, akurasi, dan latensi tiap varian model.",
-      ["Varian", "Ukuran", "Dice val", "Dice uji", "Latensi CPU Colab*", "Latensi browser**"],
-      [["ONNX FP32", "7,77 MB", "0,8641", "0,8547", "64,4 ms", "–"],
-       ["ONNX FP16", "3,89 MB", "0,8641", "0,8547", "61,6 ms", "–"],
-       ["**ONNX INT8 (dipakai web)**", "**2,01 MB**", "**0,8638**", "**0,8545**", "72,5 ms (1 thread: 50,8)", "**65–74 ms**"],
-       ["PyTorch GPU T4 (FP32 / AMP)", "7,8 MB", "–", "–", "2,78 / 2,69 ms", "–"]],
-      [4.4, 1.8, 1.6, 1.6, 3.2, 2.6], size=8.5, bold_rows=(2,),
-      note="*onnxruntime 1.30 CPU (2 vCPU Colab), batch 1, 5 warm-up + 50 run, median. **Chrome di laptop uji, onnxruntime-web 1.30 WASM "
-           "4 thread di cayman-kelompok1.vercel.app, median 3 run setelah warm-up untuk 4 sampel; tanpa COOP/COEP (1 thread) ±280–300 ms. "
-           "Latensi tidak termasuk pre/post-processing.")
-P("Kuantisasi INT8 memperkecil model 3,9 kali dengan penurunan Dice uji hanya 0,0002, dan 99,6% piksel mask-nya identik dengan model "
-  "PyTorch. Ukuran 2 MB berada jauh di bawah target panduan (20–30 MB). Uji di browser menghasilkan Dice yang sama dengan perhitungan "
-  "Python pada 3 dari 4 sampel (selisih ≤ 0,0003), sedangkan satu sampel sulit berbeda 0,015. Selisih ini diduga berasal dari perbedaan "
-  "kernel INT8 antara WASM dan x86. Pada CPU Colab, INT8 tidak secara konsisten lebih cepat daripada FP32, sehingga keuntungan utamanya "
-  "adalah ukuran unduhan yang kecil.")
-figure(FIG / "web_live.jpg", 14.0, "Gambar 5. Aplikasi web CAYMAN (cayman-kelompok1.vercel.app): inferensi di browser dengan tombol Try Sample Data.")
+H2("3.3 Efisiensi komputasi (Green/Edge AI)")
+table("Tabel 4. Ukuran, kesetaraan ONNX, dan latensi model yang dipakai di web.",
+      ["Model (varian web)", "Ukuran", "Dice uji ONNX", "Kesetaraan dengan notebook", "Latensi CPU*", "Latensi browser**"],
+      [["Dark-spot (ONNX)", "<0,1 MB", "0,7259", "piksel identik 100%", "0,3 ms", "±1 ms"],
+       ["Random Forest (fitur + pohon)", "1,83 MB", "–", "mask sama 99,98%†", "218 ms", "±270 ms"],
+       ["LightGBM (fitur + pohon)", "0,24 MB", "–", "mask sama 99,98%†", "349 ms", "±410 ms"],
+       ["U-Net Lite INT8", "2,01 MB", "0,8545", "FP32 7,77 MB: 0,8547", "50 ms", "105–122 ms"],
+       ["**DeepLabV3+ INT8**", "**4,84 MB**", "**0,8673**", "FP32 17,5 MB: 0,8667", "**26 ms**", "±130 ms"]],
+      [4.2, 1.7, 2.0, 3.6, 1.9, 2.3], size=8.5, bold_rows=(4,),
+      note="*onnxruntime CPU Colab (2 vCPU), 1 thread, batch 1, median 20 run. **Chrome di laptop uji, onnxruntime-web WASM multi-thread "
+           "(COOP/COEP), median 3 run setelah warm-up. †Diuji pada 100 citra uji acak karena inferensi pohon di CPU lambat.")
+P("Kuantisasi INT8 memperkecil DeepLabV3+ 3,6 kali tanpa penurunan Dice, dan justru tercepat di CPU karena MobileNetV2 memakai konvolusi "
+  "*depthwise*. Model ML berukuran paling kecil, tetapi paling lambat karena setiap piksel (65.536 per citra) harus melewati semua pohon. "
+  "Semua model jauh di bawah target panduan (20–30 MB).")
 
-H2("3.5 Visualisasi dan analisis error")
-figure(FIG / "pred_examples.png", 11.5, "Gambar 6. Contoh prediksi uji: kasus terburuk, median, terbaik, dan GT kosong (kolom terakhir: TP hijau, FP merah, FN biru).")
-P("Dice per citra (805 citra uji yang berisi minyak) memiliki median 0,797, persentil-10 0,517, dan persentil-90 0,965; sebanyak 70 citra "
-  "memiliki Dice < 0,5 (Gambar 6 dan 7). Pola kesalahan utama adalah:")
-B("**Tumpahan sangat kecil.** Area GT hanya beberapa piksel sehingga Dice per citra tidak stabil. Model juga menandai garis gelap tipis "
-  "yang tidak dilabeli, kemungkinan *look-alike* atau label yang terlewat.")
-B("**Batas tumpahan.** Label berupa poligon kasar, sedangkan prediksi lebih halus dan sedikit melebar; FP terkumpul di tepi slick.")
-B("**Citra tanpa minyak** (34 citra): rata-rata hanya 0,25% piksel salah ditandai, umumnya berupa bercak gelap kecil. Pada 20 citra yang "
-  "seluruhnya minyak, Dice ≥ 0,92.")
-figure(FIG / "test_dice_distribution.png", 14.5, "Gambar 7. Distribusi Dice per citra (kiri) dan hubungannya dengan luas tumpahan GT (kanan).")
-P("Pada data PALSAR yang tidak pernah dilihat model, Dice turun ke 0,777 (Tabel 2) tetapi tetap di atas baseline (0,641). Hal ini "
-  "menunjukkan bahwa model perlu dilatih ulang atau di-*fine-tune* sebelum dipakai pada sensor atau wilayah lain.")
+H2("3.4 Analisis error")
+P("Dice per citra U-Net Lite memiliki median 0,797 (persentil-10 0,517; persentil-90 0,965). Kesalahan utama semua model adalah: (1) "
+  "tumpahan sangat kecil dan garis gelap tipis yang tidak dilabeli (kemungkinan *look-alike* atau label terlewat); (2) batas slick, karena "
+  "label berupa poligon kasar sedangkan prediksi lebih halus dan sedikit melebar; dan (3) pada model ML, bercak gelap kecil di area laut "
+  "(Gambar 2). Performa per citra juga bervariasi: pada beberapa citra sulit, model ML dapat lebih baik daripada DL, sehingga aplikasi web "
+  "menyediakan mode \"bandingkan semua model\" untuk analis. Pada PALSAR, semua model turun 5–9 poin, sehingga *fine-tuning* diperlukan "
+  "sebelum dipakai pada sensor atau wilayah lain.")
 
 # ========================= DAMPAK OPERASIONAL & BISNIS ========================
-H1("4. Analisis Dampak Operasional dan Estimasi Bisnis")
-P("Solusi ini menyasar **Pilar 1 HSSE** (perlindungan lingkungan laut) dan secara tidak langsung **Pilar 3** (efisiensi biaya). Skenario "
-  "penggunaannya adalah *screening* otomatis citra Sentinel-1 di sekitar anjungan lepas pantai, jalur pipa bawah laut, dan terminal. "
-  "Keluarannya berupa peta area tumpahan beserta estimasi luas dalam km² (luas = jumlah piksel minyak × resolusi²) sebagai dasar prioritas "
-  "verifikasi dan pengerahan tim respons.")
-B("**Kecepatan screening.** Latensi terukur 65–74 ms per patch 256×256 di browser. Sebagai estimasi, area 100 km × 100 km pada resolusi "
-  "10 m (10.000 × 10.000 piksel ≈ 1.526 patch) dapat dipindai sekitar 1,9 menit di laptop uji. Angka ini merupakan ekstrapolasi dari "
-  "pengukuran, belum termasuk pengunduhan dan pemrosesan awal citra.")
-B("**Keandalan untuk peringatan dini.** Recall 0,91 berarti sekitar 9 dari 10 piksel minyak terdeteksi. Precision 0,81 menunjukkan bahwa "
-  "sekitar 19% area yang ditandai perlu dikonfirmasi analis. Karena itu model diposisikan sebagai alat bantu (*human-in-the-loop*), bukan "
-  "pengambil keputusan tunggal.")
-B("**Biaya infrastruktur.** Model 2 MB dijalankan di browser pengguna dan halaman statis di-*host* di Vercel paket Hobby, sehingga tidak "
-  "memerlukan server GPU untuk inferensi. Data Sentinel-1 tersedia terbuka melalui program Copernicus.")
-B("**Pelaporan.** Peta dan luas tumpahan dapat dilampirkan pada laporan insiden HSSE dan pelaporan ke regulator.")
-P("**Estimasi finansial belum dihitung** karena memerlukan data internal perusahaan. Kerangka perhitungan yang disarankan: penghematan per "
-  "periode = (waktu interpretasi manual per scene − waktu screening + verifikasi) × biaya analis per jam × jumlah scene, ditambah biaya "
-  "server GPU yang dihindari. Parameter tersebut perlu diisi dari data operasional sebelum angka penghematan dapat diklaim.")
-P("**Risiko dan mitigasi:** (1) *look-alike* ditangani dengan verifikasi analis dan penambahan kelas *look-alike* ke data latih; (2) "
-  "pergeseran domain (misalnya perairan Indonesia) ditangani dengan validasi pilot dan *fine-tuning* menggunakan citra lokal; (3) satu "
-  "citra hanya memotret kondisi sesaat, sehingga pemantauan penyebaran memerlukan citra berkala dan dapat digabungkan dengan model dispersi "
-  "seperti pada sistem operasional Petalas dkk. [10].")
+H1("4. Dampak Operasional, Efisiensi Biaya, dan Manajemen Risiko")
+figure(FIG / "web_v2_demo.jpg", 14.5, "Gambar 3. Aplikasi web: pilihan 5 model, area terdeteksi dengan poligon bernomor per slick, citra asli, dan peta probabilitas.")
+P("Solusi ini menyasar **Pilar HSSE** dan **efisiensi biaya**. Skenario penggunaannya adalah *screening* citra Sentinel-1 di sekitar anjungan, "
+  "jalur pipa, dan terminal. Keluarannya (Gambar 3): poligon setiap slick dengan luas (km²) dan keliling, GeoJSON untuk GIS, dan simulasi "
+  "respons (Gambar 4). Sebagai contoh, pada citra uji tipikal dengan resolusi 10 m/piksel, DeepLabV3+ mendeteksi 1,145 km² minyak. Dengan "
+  "skenario angin 8 m/s dari timur laut, arus 0,3 m/s ke timur, dan ketebalan *rainbow* 5 µm, slick bergerak 0,21 m/s ke tenggara, "
+  "melebar ±0,10 km²/jam, dan saat tim tiba 3 jam kemudian telah bergeser 2,3 km dengan luas ±1,45 km². Kebutuhan *oil boom* untuk "
+  "mengurung seluruh slick sekitar 16,4 km.")
+figure(FIG / "web_v2_sim.jpg", 12.0, "Gambar 4. Simulasi drift & penyebaran: posisi slick +6 jam (warna pelangi), jejak waktu (garis putus), dan oil boom saat tim tiba (pelampung oranye).")
+P("**Efisiensi biaya.** Kalkulator di web membandingkan patroli pencarian konvensional dengan CV + verifikasi analis. Dengan asumsi "
+  "ilustratif (12 sortie/bulan × 4 jam × Rp45 juta/jam; 10 citra/bulan × 0,5 jam analis × Rp150 ribu/jam; 25% sortie tetap dibutuhkan "
+  "untuk konfirmasi), biaya pemantauan turun dari Rp2,16 miliar menjadi Rp0,54 miliar per bulan (−75%). Citra Sentinel-1 tersedia gratis "
+  "melalui Copernicus dan inferensi berjalan di browser sehingga biaya komputasinya praktis nol. Angka ini bergantung pada asumsi dan "
+  "harus diganti dengan data kontrak perusahaan sebelum diklaim.")
+table("Tabel 5. Register risiko HSSE kegiatan pemantauan (L = kemungkinan, S = keparahan, skala 1–5).",
+      ["Bahaya", "S", "Sebelum (L×S)", "Sesudah CV (L×S)"],
+      [["Paparan uap hidrokarbon (VOC, H₂S) saat inspeksi jarak dekat", "4", "3×4 = 12", "1×4 = 4"],
+       ["Kecelakaan penerbangan pengintaian", "5", "2×5 = 10", "1×5 = 5"],
+       ["Insiden kapal patroli (jatuh ke laut, tabrakan)", "4", "3×4 = 12", "1×4 = 4"],
+       ["Kebakaran/ledakan di dekat minyak segar", "5", "2×5 = 10", "1×5 = 5"],
+       ["Kelelahan kru akibat patroli panjang & malam", "3", "4×3 = 12", "2×3 = 6"],
+       ["Tumpahan terlambat diketahui (malam/berawan)", "4", "3×4 = 12", "2×4 = 8"],
+       ["*Risiko baru:* salah deteksi / slick terlewat", "3", "–", "3×3 = 9"],
+       ["**Total skor risiko**", "", "**68**", "**41 (−40%)**"]],
+      [8.6, 0.8, 3.0, 3.4], size=8.5)
+P("**Manajemen risiko.** Pengurangan sortie pencarian menurunkan jam paparan personel di lapangan dari 192 menjadi 48 jam per bulan "
+  "(−75%), sehingga kemungkinan (L) bahaya berbasis paparan turun dua tingkat, sedangkan keparahan (S) tetap karena konsekuensinya sama bila "
+  "kejadian terjadi (Tabel 5). Pada hierarki pengendalian, pemindahan pencarian slick dari lapangan ke analisis citra termasuk "
+  "**eliminasi paparan**. CV tidak menggantikan tim lapangan sepenuhnya: verifikasi, pengambilan sampel, dan pemasangan boom tetap "
+  "dilakukan manusia, dan risiko baru berupa salah deteksi dikendalikan dengan verifikasi analis untuk setiap alarm.")
+P("**Batasan.** Dataset SOS tidak memiliki koordinat dan waktu akuisisi sehingga simulasi tidak dapat divalidasi terhadap kejadian nyata; "
+  "simulasi juga tidak memodelkan penguapan, emulsifikasi, garis pantai, maupun angin/arus yang berubah. Simulasi diposisikan sebagai "
+  "gambaran awal yang diperbarui dengan data cuaca/oseanografi dan citra berikutnya, seperti pada sistem operasional Petalas dkk. [10].")
 
 # ================================ KESIMPULAN ==================================
 H1("5. Kesimpulan dan Saran")
-P("Proyek ini menghasilkan *pipeline* segmentasi tumpahan minyak dari citra Sentinel-1 SAR yang telah diaudit, dapat direproduksi, dan "
-  "berjalan di browser. U-Net Lite (1,94 juta parameter) mencapai Dice 0,855, IoU 0,746, dan recall 0,910 pada 839 citra uji, jauh di atas "
-  "baseline klasik, serta hanya 2,4 poin F1 di bawah CBD-Net pada dataset yang sama. Kuantisasi INT8 menghasilkan model 2,01 MB tanpa "
-  "penurunan akurasi yang berarti, dan aplikasi web publik di cayman-kelompok1.vercel.app menjalankan inferensi di sisi klien dalam 65–74 ms "
-  "per patch.")
-P("Saran pengembangan: (1) menggunakan *encoder* ringan pralatih (misalnya MobileNet) serta modul *attention*/supervisi tepi untuk menutup "
-  "selisih dengan CBD-Net; (2) menambahkan kelas *look-alike* dan data multi-sensor; (3) memproses citra Sentinel-1 berukuran penuh dengan "
-  "*tiling* dan georeferensi; (4) menggunakan citra berkala untuk memantau penyebaran; (5) melakukan validasi pilot di perairan operasi "
-  "Indonesia bersama analis HSSE; serta (6) menguji akselerasi WebGPU.")
+P("Pada protokol yang sama, model DL mengungguli model ML untuk segmentasi tumpahan minyak Sentinel-1: DeepLabV3+ MobileNetV2 pralatih "
+  "mencapai Dice 0,867 dan IoU 0,765 (1,1 poin F1 di bawah CBD-Net), U-Net Lite 0,855, sedangkan Random Forest dan LightGBM sekitar 0,805 "
+  "dengan ukuran model jauh lebih kecil. Kelima model berjalan di browser, dan aplikasi web melengkapi deteksi dengan poligon per slick, "
+  "simulasi arah dan laju penyebaran, estimasi kebutuhan oil boom, serta analisis biaya dan risiko HSSE.")
+P("Saran pengembangan: (1) menambah kelas *look-alike* dan data multi-sensor; (2) memproses citra Sentinel-1 penuh dengan *tiling* dan "
+  "georeferensi sehingga poligon memiliki koordinat nyata; (3) menghubungkan simulasi dengan data angin dan arus operasional (misalnya "
+  "Copernicus Marine) serta memvalidasinya dengan citra berurutan; (4) melakukan uji beberapa *seed* untuk mengukur variasi hasil; dan (5) "
+  "validasi pilot di perairan Indonesia bersama tim HSSE untuk mengganti asumsi biaya dengan data nyata.")
 
 # =============================== DAFTAR PUSTAKA ===============================
 H1("Daftar Pustaka")
@@ -448,6 +425,15 @@ refs = [
     "B. Jacob *et al.*, \"Quantization and training of neural networks for efficient integer-arithmetic-only inference,\" in *Proc. IEEE/CVF CVPR*, 2018, pp. 2704–2713, doi: 10.1109/CVPR.2018.00286.",
     "BitsandLayers, \"Deep-SAR SOS Oil Spill Detection Dataset,\" Kaggle, v1, 2026. [Online]. Available: https://www.kaggle.com/datasets/bitsandlayers/sar-oil-spill-segmentation-dataset-sos (diakses 24 Sep. 2026). Lisensi CC BY 4.0.",
     "ONNX Runtime developers, \"ONNX Runtime (onnxruntime-web) v1.30.0,\" 2026. [Online]. Available: https://onnxruntime.ai",
+    "L. Breiman, \"Random forests,\" *Machine Learning*, vol. 45, no. 1, pp. 5–32, 2001, doi: 10.1023/A:1010933404324.",
+    "G. Ke *et al.*, \"LightGBM: A highly efficient gradient boosting decision tree,\" in *Advances in Neural Information Processing Systems 30 (NIPS 2017)*, 2017, pp. 3146–3154.",
+    "L.-C. Chen, Y. Zhu, G. Papandreou, F. Schroff, and H. Adam, \"Encoder-decoder with atrous separable convolution for semantic image segmentation,\" in *Proc. ECCV 2018*, LNCS, vol. 11211. Cham: Springer, 2018, pp. 833–851, doi: 10.1007/978-3-030-01234-2_49.",
+    "M. Sandler, A. Howard, M. Zhu, A. Zhmoginov, and L.-C. Chen, \"MobileNetV2: Inverted residuals and linear bottlenecks,\" in *Proc. IEEE/CVF CVPR*, 2018, pp. 4510–4520, doi: 10.1109/CVPR.2018.00474.",
+    "NOAA Office of Response and Restoration, \"GNOME: General NOAA Operational Modeling Environment,\" 2024. [Online]. Available: https://response.restoration.noaa.gov/gnome",
+    "J. A. Fay, \"Physical processes in the spread of oil on a water surface,\" in *Proc. Joint Conf. Prevention and Control of Oil Spills*, Washington, DC: API, 1971, pp. 463–467, doi: 10.7901/2169-3358-1971-1-463.",
+    "Bonn Agreement, \"Bonn Agreement Aerial Operations Handbook: Bonn Agreement Oil Appearance Code,\" 2016. [Online]. Available: https://www.bonnagreement.org",
+    "A. Okubo, \"Oceanic diffusion diagrams,\" *Deep Sea Research and Oceanographic Abstracts*, vol. 18, no. 8, pp. 789–802, 1971, doi: 10.1016/0011-7471(71)90046-5.",
+    "ITOPF, \"Use of booms in oil pollution response,\" Technical Information Paper no. 3, London: ITOPF, 2011. [Online]. Available: https://www.itopf.org",
 ]
 for i, ref in enumerate(refs, 1):
     p = doc.add_paragraph(); p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
@@ -476,8 +462,8 @@ table("Tabel A1. Pembagian peran dan kontribusi anggota Kelompok 1 CAYMAN.",
 H1("Lampiran B. Artefak Proyek")
 B("Repositori GitHub (publik): https://github.com/aderizkydarmawan/cayman-oil-spill-sar, berisi notebook Colab, skrip model/ekspor, "
   "hasil audit, metrik (JSON/CSV), model ONNX, dan kode web.")
-B("Aplikasi web: https://cayman-kelompok1.vercel.app, yang memuat demo inferensi, *Try Sample Data*, estimasi luas km², dan profil tim.")
-B("Reproduksi: buka notebooks/Kasus38_SAR_OilSpill_UNetLite.ipynb di Google Colab (runtime T4 GPU) lalu jalankan *Run all*.")
+B("Aplikasi web: https://cayman-kelompok1.vercel.app, yang memuat demo inferensi 5 model (*Try Sample Data*), poligon & GeoJSON per slick, simulasi penyebaran & oil boom, kalkulator biaya & risiko HSSE, dan profil tim.")
+B("Reproduksi: buka notebooks/Kasus38_SAR_OilSpill_UNetLite.ipynb di Google Colab (runtime T4 GPU) lalu jalankan *Run all*; perbandingan ML vs DL ada di Bagian B (sel 14–19), hasilnya di outputs/v2/.")
 
 doc.save(OUT)
 print("saved", OUT)
