@@ -31,7 +31,8 @@ async function init() {
     $("backend").textContent = `onnxruntime-web ${ort.env.versions?.web ?? ""} · WASM · ${self.crossOriginIsolated ? "multi-thread" : "1 thread"}`;
     await loadSamples();
   } catch (e) {
-    $("status").textContent = "gagal memuat model: " + e.message;
+    $("status").textContent = "gagal memuat model (koneksi lambat?)";
+    $("status").insertAdjacentHTML("afterend", ` <button class="btn small ghost" onclick="location.reload()">Coba lagi</button>`);
     console.error(e);
   }
 }
