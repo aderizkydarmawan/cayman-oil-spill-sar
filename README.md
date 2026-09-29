@@ -19,6 +19,9 @@ outputs/checkpoints/  unet_lite_best.pt (epoch 37)
 outputs/eval/         metrics.json, metrics_summary.csv, per_image_test_dice.csv, grafik
 outputs/onnx/         model FP32/FP16/INT8 + edge_benchmark.json
 outputs/training_log.csv, training_curves.png, train_config.json, preprocessing_config.json, val_threshold_sweep.csv
+outputs/v2/            hasil Bagian B: perbandingan 5 model, feature importance, ONNX semua model, models.json
+src/sar_features.py    fitur per piksel untuk model ML (PyTorch -> ONNX)
+src/export_models_v2.py ekspor ONNX semua model v2 + verifikasi + latency
 web/                  demo inferensi di browser (index.html, app.js, model/, samples/)
 ```
 
@@ -115,26 +118,59 @@ Dengan header COOP/COEP (`web/vercel.json`, atau lokal lewat `python src/serve_l
 
 Selisih kecil pada sampel 3 kemungkinan berasal dari perbedaan kernel INT8 antara WASM dan x86. Latency di browser sangat bergantung pada perangkat.
 
+## v2 — Machine Learning vs Deep Learning (saran dosen praktisi)
+
+Notebook **Bagian B** (sel 14–19) menambah 3 model dan membandingkan 5 model dengan split, aturan threshold (dipilih di validation), dan metrik yang sama. Dijalankan di Colab (GPU Tesla T4) pada 29 September 2026. Split diverifikasi identik dengan split resmi, dan U-Net Lite dievaluasi ulang dari checkpoint yang sama (Dice 0,8547, sama persis).
+
+| Keluarga | Model | Threshold | Dice test | IoU | Precision | Recall | PR-AUC | Dice PALSAR | Ukuran web | CPU 1 thread | Training |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Baseline | Dark-spot threshold | – | 0,7259 | 0,5698 | 0,6669 | 0,7964 | – | 0,6410 | <0,1 MB | 0,3 ms | – |
+| Machine Learning | Random Forest (20 pohon, depth 12) | 0,40 | 0,8036 | 0,6717 | 0,7721 | 0,8377 | 0,8981 | 0,7506 | 1,83 MB | 218 ms | 55 s (CPU) |
+| Machine Learning | LightGBM (100 pohon, 31 daun) | 0,35 | 0,8056 | 0,6745 | 0,7568 | 0,8612 | 0,9020 | 0,7490 | 0,24 MB | 349 ms | 10 s (CPU) |
+| Deep Learning | U-Net Lite (1,94 jt parameter) | 0,45 | 0,8547 | 0,7462 | 0,8058 | 0,9099 | 0,9361 | 0,7774 | 2,01 MB | 50 ms | 10,0 menit |
+| Deep Learning | **DeepLabV3+ MobileNetV2** (4,38 jt, pretrained ImageNet) | 0,50 | **0,8667** | **0,7648** | **0,8344** | 0,9016 | **0,9479** | **0,7975** | 4,84 MB | 26 ms | 10,6 menit |
+
+Sumber: `outputs/v2/model_comparison.csv`, `outputs/v2/metrics_v2.json`, `outputs/v2/export_v2_report.json`. Ukuran dan latency adalah varian ONNX yang dipakai web (CPU Colab 2 vCPU, batch 1, median 20 run).
+
+- **Model ML** bekerja per piksel dengan 13 fitur buatan tangan (`src/sar_features.py`): intensitas, rata-rata lokal 5/11/21/41, std lokal 5/11/21, gradien Sobel, kontras, selisih terhadap rata-rata citra, dan min/max lokal. Training memakai 300 piksel acak per citra train (855.000 baris). Fitur terpenting untuk kedua model adalah `min_11` (kegelapan minimum lokal) dan `selisih_mean_citra` (lebih gelap dari rata-rata citra), yang sesuai dengan sifat slick yang gelap di SAR (`outputs/v2/ml_feature_importance.png`).
+- **DeepLabV3+** dilatih dengan resep yang sama dengan U-Net Lite (loss, augmentasi, optimizer, 40 epoch). Checkpoint terbaik ada di epoch 40 (`outputs/v2/training_log_deeplabv3p.csv`). Transfer learning dari ImageNet memberi Dice tertinggi dan generalisasi lintas sensor terbaik.
+- **Temuan:** kedua model DL mengungguli ML sekitar 5–6 poin Dice. Selisih terbesar ada di precision, karena fitur lokal ML sulit membedakan slick dari area gelap lain. ML tetap jauh di atas baseline dark-spot (+8 poin), dengan model yang sangat kecil.
+- **Kesetaraan ONNX:** Random Forest dan LightGBM diekspor sebagai satu graf (fitur + ensemble pohon, opset 15). Kecocokan mask piksel dengan notebook ≥ 99,98% pada 100 citra test acak. DeepLabV3+ INT8 (QDQ, kalibrasi 200 citra train) dipilih dengan aturan yang sama seperti U-Net Lite: Dice test 0,8673.
+
+### Web v2 (`web/`)
+- **Pilih model**: 5 model dari `web/model/models.json`, dan tombol **Bandingkan semua model** untuk melihat hasil berdampingan.
+- **Poligon slick**: mask diubah menjadi komponen terhubung, lalu batas luarnya ditelusuri dan disederhanakan (Douglas–Peucker). Setiap slick mendapat nomor, luas, keliling, dan potongan citra. Tersedia unduhan **GeoJSON** (`web/geo.js`).
+- **Simulasi arah & laju penyebaran** (`web/sim.js`), sebagai skenario what-if:
+  - Drift = 3% kecepatan angin + arus.
+  - Penyebaran = Fay (gravitasi-viskos) + difusi turbulen Okubo.
+  - Volume = luas × ketebalan kode Bonn Agreement.
+  - Kebutuhan **oil boom** = 1,3 × keliling convex hull slick saat tim tiba.
+  - Peringatan muncul bila arus > 0,7 knot.
+- **Efisiensi biaya & risiko HSSE** (`web/hse.js`): kalkulator biaya patroli vs CV+verifikasi dengan asumsi yang bisa diubah, register risiko L×S, dan matriks 5×5 sebelum/sesudah. Risiko baru (salah deteksi) juga dicatat.
+- **Tema terang** bernuansa laut dan kilau minyak.
+
 ## Menjalankan
 
 **Notebook (Colab):**
 1. Unggah notebook ke Colab.
 2. Pilih Runtime ▸ Change runtime type ▸ **T4 GPU**.
 3. Jalankan Run all. Dataset terunduh otomatis lewat kagglehub, tanpa token.
+   Untuk **Bagian B saja**: jalankan sel bagian 0–5, lewati 6–13, lalu jalankan sel 14 sampai akhir. Checkpoint U-Net Lite diunduh otomatis dari repo.
 4. Hasil tersimpan di `/content/outputs`, dan sel terakhir mengunduh file zip-nya.
 
 **Demo web lokal:**
 ```bash
 cd web
-python -m http.server 8000   # buka http://localhost:8000
+python ../src/serve_local.py   # buka http://127.0.0.1:8765 (header COOP/COEP aktif)
 ```
 
-## Kontrak integrasi frontend (`web/model/model_metadata.json`)
+## Kontrak integrasi frontend (v1: `web/model/model_metadata.json`; v2: `web/model/models.json`)
 
 | Bagian | Spesifikasi |
 |---|---|
 | **Input** | `image`, float32, shape `[1,1,256,256]` (NCHW, grayscale). Grayscale = rata-rata RGB, sama dengan channel R untuk citra dataset. Resize ke 256×256 bila ukurannya berbeda. Nilai = `(x/255 − mean)/std`. |
 | **Output** | `logits`, float32, `[1,1,256,256]`. Mask = `sigmoid(logits) ≥ 0,45`. |
+| **v2** | Tiap model di `models.json` punya `input` (`raw` = piksel 0–255, `normalized` = rumus di atas), `output` (`prob` atau `logits`), dan `threshold` sendiri. |
 | **Label** | 0 = laut / bukan minyak, 1 = oil spill |
 | **Sampel** | `web/samples/samples.json`: 4 citra test Sentinel beserta GT-nya, tanpa diubah. Atribusi di `ATTRIBUTION.txt`. |
 
@@ -145,7 +181,9 @@ python -m http.server 8000   # buka http://localhost:8000
 - Label train mengandung piksel antara, dan label berbentuk poligon kasar, sehingga batas atas Dice dibatasi oleh kualitas label.
 - Tidak ada kelas *look-alike*. Area gelap seperti angin lemah atau biogenic slick berpotensi menimbulkan false positive.
 - Latency diukur di CPU Colab dan 1 laptop (browser). Ini belum mewakili perangkat lapangan, dan multi-thread WASM (COOP/COEP) belum diuji.
-- Penghematan biaya atau manfaat di lapangan **belum diukur**.
+- Penghematan biaya atau manfaat di lapangan **belum diukur**. Kalkulator di web memakai asumsi ilustratif yang bisa diubah, bukan data kontrak.
+- Simulasi drift/penyebaran tidak bisa divalidasi karena dataset SOS tidak punya koordinat dan waktu akuisisi. Simulasi juga tidak memodelkan penguapan, emulsifikasi, garis pantai, maupun angin/arus yang berubah.
+- Perbandingan ML vs DL berasal dari satu seed. Variasi antar seed belum diukur.
 
 ## Referensi kandidat (metadata diverifikasi lewat Crossref; relevansi isi **wajib dibaca tim**)
 
@@ -181,9 +219,9 @@ Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-rev
 
 ## Laporan ilmiah
 
-- `docs/laporan/Tubes_DL_Kelompok01_Oil_Spill_SAR.pdf`: laporan final (cover + 10 halaman isi; single column, A4, spasi 1.15, margin 2.5 cm).
+- `docs/laporan/Tubes_DL_Kelompok01_Oil_Spill_SAR.pdf`: laporan final v2 (cover + 9 halaman isi: perbandingan ML vs DL, simulasi respons, biaya & risiko HSSE; single column, A4, spasi 1.15, margin 2.5 cm).
 - `docs/laporan/Tubes_DL_Kelompok01_Oil_Spill_SAR.docx`: versi Word yang bisa diedit.
-- `docs/laporan/referensi.bib`: 14 referensi dalam format BibTeX, bisa diimpor ke Mendeley/Zotero.
+- `docs/laporan/referensi.bib`: 23 referensi dalam format BibTeX, bisa diimpor ke Mendeley/Zotero.
 - `docs/laporan/build_laporan.py`: skrip penyusun laporan; semua angka diambil dari `outputs/`.
 
 ## Yang masih harus diisi tim

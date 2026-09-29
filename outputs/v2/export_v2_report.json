@@ -1,0 +1,107 @@
+{
+ "REG": {
+  "dark_spot": {
+   "file": "dark_spot.onnx",
+   "input": "raw",
+   "output": "prob",
+   "onnx_test_dice": 0.7259318057624219,
+   "onnx_test_iou": 0.5697746863517228,
+   "pixel_agreement_vs_notebook": 1.0,
+   "checked_on": "test 839"
+  },
+  "random_forest": {
+   "file": "random_forest.onnx",
+   "input": "raw",
+   "output": "prob",
+   "onnx_test_dice": 0.7901300312774343,
+   "notebook_test_dice_same_subset": 0.7901591998933901,
+   "pixel_agreement_vs_notebook": 0.9998503112792969,
+   "max_abs_prob_diff": 0.08996862173080444,
+   "checked_on": "subset acak 100 citra test (seed 42), 22s"
+  },
+  "lightgbm": {
+   "file": "lightgbm.onnx",
+   "input": "raw",
+   "output": "prob",
+   "onnx_test_dice": 0.7894283984810219,
+   "notebook_test_dice_same_subset": 0.7894225198914318,
+   "pixel_agreement_vs_notebook": 0.9998576354980468,
+   "max_abs_prob_diff": 0.1504148244857788,
+   "checked_on": "subset acak 100 citra test (seed 42), 39s"
+  },
+  "deeplabv3p_mnv2": {
+   "file": "deeplabv3p_mnv2_int8_qdq.onnx",
+   "input": "normalized",
+   "output": "logits",
+   "variant": "int8",
+   "onnx_test_dice": 0.8672542650223529,
+   "onnx_test_iou": 0.7656213025065742,
+   "checked_on": "test 839",
+   "variants": {
+    "fp32": {
+     "file": "deeplabv3p_mnv2_fp32.onnx",
+     "size_mb": 17.485,
+     "val_dice": 0.8698991913494648,
+     "test_dice": 0.8667406239993828,
+     "test_iou": 0.7648210483448148,
+     "test_precision": 0.8345755477122824,
+     "test_recall": 0.901484410733064,
+     "max_abs_prob_diff_vs_torch": 1.9669532775878906e-06,
+     "cpu_latency_ms_1_thread": {
+      "median": 34.87,
+      "p90": 37.82
+     },
+     "cpu_latency_ms_all_threads": {
+      "median": 34.83,
+      "p90": 36.66
+     }
+    },
+    "fp16": {
+     "file": "deeplabv3p_mnv2_fp16.onnx",
+     "size_mb": 8.785,
+     "val_dice": 0.8698914591144131,
+     "test_dice": 0.8666932926874864,
+     "test_iou": 0.7647473425289563,
+     "test_precision": 0.8344317330047903,
+     "test_recall": 0.9015498335045465,
+     "max_abs_prob_diff_vs_torch": 0.0020852088928222656,
+     "cpu_latency_ms_1_thread": {
+      "median": 40.53,
+      "p90": 44.99
+     },
+     "cpu_latency_ms_all_threads": {
+      "median": 41.33,
+      "p90": 46.67
+     }
+    },
+    "int8": {
+     "file": "deeplabv3p_mnv2_int8_qdq.onnx",
+     "size_mb": 4.837,
+     "val_dice": 0.8695891825222385,
+     "test_dice": 0.8672542650223529,
+     "test_iou": 0.7656213025065742,
+     "test_precision": 0.8351547290251632,
+     "test_recall": 0.9019199514415324,
+     "max_abs_prob_diff_vs_torch": 0.2588057816028595,
+     "cpu_latency_ms_1_thread": {
+      "median": 26.03,
+      "p90": 28.53
+     },
+     "cpu_latency_ms_all_threads": {
+      "median": 28.85,
+      "p90": 30.77
+     }
+    }
+   }
+  },
+  "unet_lite": {
+   "file": "unet_lite_int8_qdq.onnx",
+   "input": "normalized",
+   "output": "logits",
+   "variant": "int8",
+   "onnx_test_dice": 0.8545,
+   "onnx_test_iou": 0.7459,
+   "checked_on": "test 839 (v1)"
+  }
+ }
+}
