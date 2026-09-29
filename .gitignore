@@ -1,2 +1,4 @@
-outputs/checkpoints/
+outputs/checkpoints/*
+!outputs/checkpoints/unet_lite_best.pt
+!outputs/checkpoints/deeplabv3p_mnv2_best.pt
 __pycache__/
