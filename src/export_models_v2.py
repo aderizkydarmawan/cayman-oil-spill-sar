@@ -131,8 +131,8 @@ REG["unet_lite"] = dict(file=p.name, input="normalized", output="logits", varian
 LABEL = {"dark_spot": ("Dark-spot threshold", "baseline", "Blur 7x7 lalu piksel lebih gelap dari ambang dianggap minyak. Tanpa training."),
          "random_forest": ("Random Forest", "machine_learning", "20 pohon keputusan, klasifikasi per piksel dari 13 fitur buatan tangan."),
          "lightgbm": ("LightGBM", "machine_learning", "100 pohon gradient boosting pada 13 fitur buatan tangan yang sama."),
-         "unet_lite": ("U-Net Lite", "deep_learning", "U-Net ringan 1,94 juta parameter, dilatih dari nol. Model utama."),
-         "deeplabv3p_mnv2": ("DeepLabV3+ MobileNetV2", "deep_learning", "Encoder MobileNetV2 pretrained ImageNet (transfer learning) + decoder DeepLabV3+.")}
+         "unet_lite": ("U-Net Lite", "deep_learning", "U-Net ringan 1,94 juta parameter, dilatih dari nol."),
+         "deeplabv3p_mnv2": ("DeepLabV3+ MobileNetV2", "deep_learning", "Encoder MobileNetV2 pretrained ImageNet (transfer learning) + decoder DeepLabV3+. Model terbaik (default).")}
 models = []
 for k, (nm, fam, desc) in LABEL.items():
     r = REG[k]; path = D / r["file"]; shutil.copy(path, WEB / path.name)
@@ -148,7 +148,7 @@ for k, (nm, fam, desc) in LABEL.items():
         onnx_check={kk: vv for kk, vv in r.items() if kk not in ("variants", "file", "input", "output")},
         cpu_latency_ms_colab=dict(one_thread=lat["cpu_latency_ms_1_thread"], all_threads=lat["cpu_latency_ms_all_threads"])))
     print(f"{nm:24s} {models[-1]['size_mb']:7.3f} MB | Dice test {t['dice_global']:.4f} | 1-thread {lat['cpu_latency_ms_1_thread']['median']} ms", flush=True)
-REGISTRY = dict(default="unet_lite", preprocessing=dict(raw="float32 piksel 0-255 (channel R), shape [1,1,256,256]",
+REGISTRY = dict(default="deeplabv3p_mnv2", preprocessing=dict(raw="float32 piksel 0-255 (channel R), shape [1,1,256,256]",
                 normalized=f"(x/255 - {MEAN:.6f}) / {STD:.6f}, shape [1,1,256,256]", mean=MEAN, std=STD),
                 output=dict(prob="probabilitas minyak langsung", logits="prob = sigmoid(logits)"),
                 env=dict(onnxruntime=ort.__version__, onnx=onnx.__version__, torch=torch.__version__, cpu_count=os.cpu_count(),

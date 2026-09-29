@@ -1,5 +1,5 @@
 {
- "default": "unet_lite",
+ "default": "deeplabv3p_mnv2",
  "preprocessing": {
   "raw": "float32 piksel 0-255 (channel R), shape [1,1,256,256]",
   "normalized": "(x/255 - 0.383440) / 0.201973, shape [1,1,256,256]",
@@ -144,7 +144,7 @@
    "id": "unet_lite",
    "name": "U-Net Lite",
    "family": "deep_learning",
-   "description": "U-Net ringan 1,94 juta parameter, dilatih dari nol. Model utama.",
+   "description": "U-Net ringan 1,94 juta parameter, dilatih dari nol.",
    "file": "unet_lite_int8_qdq.onnx",
    "size_mb": 2.009,
    "input": "normalized",
@@ -184,7 +184,7 @@
    "id": "deeplabv3p_mnv2",
    "name": "DeepLabV3+ MobileNetV2",
    "family": "deep_learning",
-   "description": "Encoder MobileNetV2 pretrained ImageNet (transfer learning) + decoder DeepLabV3+.",
+   "description": "Encoder MobileNetV2 pretrained ImageNet (transfer learning) + decoder DeepLabV3+. Model terbaik (default).",
    "file": "deeplabv3p_mnv2_int8_qdq.onnx",
    "size_mb": 4.837,
    "input": "normalized",
