@@ -4,18 +4,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CAYMAN — Oil Spill SAR</title>
-  <meta name="description" content="Deteksi & pemetaan tumpahan minyak dari citra satelit Sentinel-1 SAR, langsung di browser." />
+  <meta name="description" content="Deteksi, pemetaan poligon, dan simulasi penyebaran tumpahan minyak dari citra satelit Sentinel-1 SAR, langsung di browser." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" crossorigin="anonymous" />
-  <link rel="stylesheet" href="style.css?v=8" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css?v=22" />
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <nav class="topbar">
     <div class="wrap topbar-inner">
-      <a class="brand" href="#top"><span class="brand-dot"></span>CAYMAN</a>
+      <a class="brand" href="#top"><span class="brand-drop"></span>CAYMAN</a>
       <div class="links">
-        <a href="#demo">Demo</a><a href="#hasil">Hasil</a><a href="#cara">Cara Kerja</a><a href="#tim">Tim</a>
+        <a href="#demo">Demo</a><a href="#simulasi">Simulasi</a><a href="#efisiensi">Biaya &amp; Risiko</a><a href="#hasil">Performa</a><a href="#tim">Tim</a>
       </div>
     </div>
   </nav>
@@ -24,111 +24,311 @@
     <div class="wrap hero-grid">
       <div>
         <span class="pill">Kelompok 1 · CAYMAN · Kasus 38 · HSSE · Edge AI</span>
-        <h1>Deteksi tumpahan minyak dari <span class="grad">citra satelit radar</span> dalam hitungan detik.</h1>
-        <p class="lead">Model AI ringan membaca citra Sentinel-1 SAR dan menandai area minyak di laut. Semua berjalan di browser Anda — tanpa server, tanpa mengunggah data.</p>
+        <h1>Temukan tumpahan minyak dari <span class="sheen">citra satelit radar</span>, lalu rencanakan responsnya.</h1>
+        <p class="lead">Lima model Machine Learning &amp; Deep Learning membaca citra Sentinel-1 SAR, menggambar poligon area tercemar, memperkirakan arah &amp; laju penyebarannya, dan menghitung panjang oil boom yang dibutuhkan. Semua berjalan di browser.</p>
         <div class="cta">
-          <a class="btn primary" href="#demo">Coba Sekarang</a>
-          <a class="btn ghost" href="#hasil">Lihat Performa</a>
+          <a class="btn primary" href="#demo">Coba Deteksi</a>
+          <a class="btn ghost" href="#simulasi">Lihat Simulasi</a>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><b id="kpi-dice">0,867</b><span id="kpi-dice-lbl">Dice test terbaik</span></div>
+          <div class="kpi"><b id="kpi-recall">91%</b><span>Recall area minyak</span></div>
+          <div class="kpi"><b id="kpi-models">5</b><span>Model ML &amp; DL</span></div>
+          <div class="kpi"><b>0 server</b><span>Inferensi di browser</span></div>
         </div>
       </div>
-      <div class="kpis">
-        <div class="kpi"><b>0,855</b><span>Dice score (test)</span></div>
-        <div class="kpi"><b>91%</b><span>Recall area minyak</span></div>
-        <div class="kpi"><b>2 MB</b><span>Ukuran model INT8</span></div>
-        <div class="kpi"><b>~0,1 s</b><span>Inferensi di browser</span></div>
-      </div>
+      <figure class="hero-art" aria-label="Ilustrasi tumpahan minyak di laut yang dikurung oil boom, dipantau satelit">
+        <svg viewBox="0 0 520 440" role="img">
+          <defs>
+            <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0f4fb"/><stop offset="1" stop-color="#9fd6ea"/></linearGradient>
+            <linearGradient id="oil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset=".3" stop-color="#db2777"/><stop offset=".55" stop-color="#f59e0b"/><stop offset=".78" stop-color="#10b981"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient>
+            <radialGradient id="dark" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#1e1b4b" stop-opacity=".85"/><stop offset="1" stop-color="#1e1b4b" stop-opacity=".25"/></radialGradient>
+            <clipPath id="round"><rect width="520" height="440" rx="28"/></clipPath>
+          </defs>
+          <g clip-path="url(#round)">
+            <rect width="520" height="440" fill="url(#sea)"/>
+            <g class="waves" stroke="#fff" stroke-opacity=".7" fill="none" stroke-width="2">
+              <path d="M-20 70 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
+              <path d="M-50 380 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
+              <path d="M-10 410 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
+            </g>
+            <path d="M160 170 C200 120 300 125 345 160 C395 198 380 262 322 285 C265 310 190 296 160 258 C135 228 138 196 160 170Z" fill="url(#dark)"/>
+            <path class="slick" d="M175 180 C210 140 290 145 330 172 C368 200 358 250 312 268 C262 288 205 278 180 250 C160 228 160 200 175 180Z" fill="url(#oil)" opacity=".55"/>
+            <path d="M175 180 C210 140 290 145 330 172 C368 200 358 250 312 268 C262 288 205 278 180 250 C160 228 160 200 175 180Z" fill="none" stroke="#fde047" stroke-width="3" stroke-dasharray="1 0"/>
+            <g class="boom" fill="#fb923c" stroke="#9a3412" stroke-width="1.5">
+              <path d="M150 170 C195 110 305 112 358 150 C412 192 398 275 330 300 C265 324 180 312 145 262 C118 228 124 196 150 170Z" fill="none" stroke="#f97316" stroke-width="3"/>
+            </g>
+            <g id="floats"></g>
+            <g transform="translate(360 330) rotate(-12)">
+              <path d="M0 0 h120 l-12 22 h-100z" fill="#334155"/><rect x="18" y="-16" width="34" height="16" rx="3" fill="#f8fafc"/><rect x="70" y="-8" width="30" height="8" fill="#ef4444"/>
+            </g>
+            <g transform="translate(70 40)">
+              <rect x="-6" y="-4" width="40" height="24" rx="4" fill="#0f172a"/><rect x="-44" y="2" width="34" height="12" fill="#2563eb"/><rect x="38" y="2" width="34" height="12" fill="#2563eb"/>
+              <path d="M14 20 L-10 140 M14 20 L130 150" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4 5" opacity=".7"/>
+            </g>
+            <g font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">
+              <rect x="300" y="110" width="150" height="26" rx="13" fill="#fff" opacity=".92"/><text x="314" y="127" fill="#0f172a">Slick 1 · 2,41 km²</text>
+              <rect x="30" y="300" width="140" height="26" rx="13" fill="#fff7ed" opacity=".95"/><text x="42" y="317" fill="#9a3412">Oil boom 9,8 km</text>
+            </g>
+          </g>
+        </svg>
+      </figure>
     </div>
+    <svg class="wave-sep" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C240 60 480 0 720 30 S1200 60 1440 30 V60 H0Z"/></svg>
   </header>
 
-  <main class="wrap">
+  <main>
     <!-- DEMO -->
-    <section id="demo" class="section">
-      <div class="section-head">
-        <h2>Demo Interaktif</h2>
-        <div class="status-chip"><span class="led" id="led"></span><span id="status">memuat model…</span></div>
+    <section id="demo" class="section alt">
+      <div class="wrap">
+        <div class="section-head">
+          <div><span class="eyebrow">01 · Deteksi</span><h2>Demo interaktif</h2></div>
+          <div class="status-chip"><span class="led" id="led"></span><span id="status">memuat model…</span></div>
+        </div>
+
+        <div class="demo-grid">
+          <aside class="card controls">
+            <h3>1 · Pilih model</h3>
+            <div id="model-picker" class="model-picker"></div>
+            <p class="model-desc" id="model-desc"></p>
+
+            <h3>2 · Pilih citra</h3>
+            <div id="sample-buttons" class="samples"></div>
+            <label class="drop" for="file">
+              <input type="file" id="file" accept="image/*" />
+              <span>⬆ Unggah citra SAR sendiri</span>
+              <small>PNG/JPG grayscale · otomatis 256×256</small>
+            </label>
+
+            <h3>3 · Atur analisis</h3>
+            <label class="field"><span>Resolusi piksel citra asli (meter/piksel)</span>
+              <input type="number" id="px" min="0" step="0.1" placeholder="mis. 10 untuk Sentinel-1 IW GRD" />
+            </label>
+            <label class="field"><span>Threshold deteksi: <b id="thr-val">-</b></span>
+              <input type="range" id="thr" min="0.05" max="0.95" step="0.05" />
+              <small>Lebih rendah = lebih sensitif, lebih banyak alarm.</small>
+            </label>
+            <label class="field"><span>Abaikan slick lebih kecil dari</span>
+              <select id="minpx"><option value="10">10 piksel</option><option value="30" selected>30 piksel</option><option value="100">100 piksel</option><option value="300">300 piksel</option></select>
+            </label>
+            <div class="meta">
+              <div><span>File model</span><b id="model-size">-</b></div>
+              <div><span>Mesin</span><b id="backend">-</b></div>
+            </div>
+          </aside>
+
+          <div class="viewer">
+            <div class="panels">
+              <figure class="card big"><canvas id="c-overlay" width="512" height="512"></canvas>
+                <figcaption>
+                  <span>Area terdeteksi + poligon</span>
+                  <span class="layers">
+                    <label><input type="checkbox" id="ly-fill" checked /> area</label>
+                    <label><input type="checkbox" id="ly-poly" checked /> poligon</label>
+                    <label><input type="checkbox" id="ly-label" checked /> nomor</label>
+                  </span>
+                </figcaption>
+              </figure>
+              <div class="side-panels">
+                <figure class="card"><canvas id="c-input" width="256" height="256"></canvas><figcaption>Citra SAR asli</figcaption></figure>
+                <figure class="card"><canvas id="c-prob" width="256" height="256"></canvas><figcaption>Peta probabilitas</figcaption></figure>
+                <figure class="card" id="fig-gt" hidden><canvas id="c-gt" width="256" height="256"></canvas><figcaption>Ground truth (label)</figcaption></figure>
+              </div>
+            </div>
+
+            <div class="results">
+              <div class="result card"><span>Area terdeteksi</span><div id="area">-</div></div>
+              <div class="result card"><span>Waktu inferensi</span><div id="latency">-</div></div>
+              <div class="result card" id="dice-row" hidden><span>Kecocokan dengan label (Dice)</span><div><b id="dice">-</b><small id="dice-ref"></small></div></div>
+            </div>
+
+            <div class="card slick-card">
+              <div class="slick-head">
+                <h3>Daftar slick (poligon per tumpahan)</h3>
+                <div class="actions">
+                  <button class="btn small ghost" id="btn-compare">⇄ Bandingkan semua model</button>
+                  <button class="btn small ghost" id="btn-geojson">⬇ GeoJSON</button>
+                </div>
+              </div>
+              <div id="slick-list" class="slick-list"><p class="muted">Pilih sampel untuk mulai.</p></div>
+            </div>
+            <div id="compare" class="compare" hidden></div>
+            <p class="note">⚠ Alat bantu screening, bukan pengganti analis. Area gelap alami (angin lemah, lapisan biogenik) dapat terdeteksi sebagai minyak. Model dilatih pada Sentinel-1A (Teluk Persia).</p>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="demo-grid">
-        <aside class="card controls">
-          <h3>1 · Pilih citra</h3>
-          <div id="sample-buttons" class="samples"></div>
-          <label class="drop" for="file">
-            <input type="file" id="file" accept="image/*" />
-            <span>⬆ Unggah citra SAR sendiri</span>
-            <small>PNG/JPG grayscale · otomatis 256×256</small>
-          </label>
-
-          <h3>2 · Atur analisis</h3>
-          <label class="field">Resolusi piksel (meter/piksel)
-            <input type="number" id="px" min="0" step="0.1" placeholder="mis. 10 untuk Sentinel-1 IW GRD" />
-          </label>
-          <label class="field">Threshold deteksi: <b id="thr-val">-</b>
-            <input type="range" id="thr" min="0.05" max="0.95" step="0.05" />
-            <small>Lebih rendah = lebih sensitif, lebih banyak alarm.</small>
-          </label>
-
-          <div class="meta">
-            <div><span>Model</span><b id="model-name">-</b></div>
-            <div><span>Ukuran</span><b id="model-size">-</b></div>
-            <div><span>Mesin</span><b id="backend">-</b></div>
+    <!-- SIMULASI -->
+    <section id="simulasi" class="section">
+      <div class="wrap">
+        <div class="section-head">
+          <div><span class="eyebrow">02 · Respons HSSE</span><h2>Simulasi arah &amp; laju penyebaran</h2></div>
+          <span class="tag-what-if">Skenario what-if</span>
+        </div>
+        <p class="lead small">Poligon hasil deteksi di atas digerakkan dengan aturan drift <b>3% kecepatan angin + 100% arus permukaan</b> dan diperluas dengan persamaan penyebaran <b>Fay</b>. Hasilnya: ke mana slick bergerak, seberapa cepat melebar, dan berapa panjang <b>oil boom</b> (rangkaian pelampung penahan) yang perlu disiapkan saat tim tiba.</p>
+        <div class="sim-grid" id="sim">
+          <div class="card sim-controls">
+            <div class="presets">
+              <button data-preset="3,90,0.1,270">Tenang</button>
+              <button data-preset="8,45,0.3,90">Sedang</button>
+              <button data-preset="14,300,0.5,160">Kencang</button>
+            </div>
+            <label class="field"><span>Kecepatan angin: <b id="sim-wind-val"></b></span><input type="range" id="sim-wind" data-sim min="0" max="20" step="0.5" value="8" /></label>
+            <label class="field"><span>Angin bertiup <em>dari</em> (°, 0 = utara)</span> <input type="number" id="sim-wdir" data-sim min="0" max="359" value="45" /></label>
+            <label class="field"><span>Kecepatan arus: <b id="sim-cur-val"></b></span><input type="range" id="sim-cur" data-sim min="0" max="1.5" step="0.05" value="0.3" /></label>
+            <label class="field"><span>Arus mengalir <em>ke</em> (°)</span> <input type="number" id="sim-cdir" data-sim min="0" max="359" value="90" /></label>
+            <label class="field"><span>Ketebalan lapisan (Bonn Agreement)</span>
+              <select id="sim-thick" data-sim>
+                <option value="0.3">Sheen · 0,3 µm</option><option value="5" selected>Rainbow · 5 µm</option>
+                <option value="50">Metallic · 50 µm</option><option value="200">True colour · 200 µm</option>
+              </select>
+            </label>
+            <label class="field"><span>Jenis minyak</span>
+              <select id="sim-oil" data-sim><option value="830">Ringan (830 kg/m³)</option><option value="870" selected>Crude sedang (870 kg/m³)</option><option value="950">Berat (950 kg/m³)</option></select>
+            </label>
+            <label class="field"><span>Difusi turbulen laut</span>
+              <select id="sim-k" data-sim><option value="0">Tanpa difusi (hanya Fay)</option><option value="1" selected>Okubo 1× (laut normal)</option><option value="3">Okubo 3× (laut berombak)</option></select>
+            </label>
+            <div class="two">
+              <label class="field"><span>Tim tiba (jam)</span> <input type="number" id="sim-resp" data-sim min="0.5" max="48" step="0.5" value="3" /></label>
+              <label class="field"><span>Horizon (jam)</span> <input type="number" id="sim-horizon" data-sim min="1" max="72" value="12" /></label>
+            </div>
           </div>
-        </aside>
-
-        <div class="viewer">
-          <div class="panels">
-            <figure class="card"><canvas id="c-input" width="256" height="256"></canvas><figcaption>Citra SAR</figcaption></figure>
-            <figure class="card"><canvas id="c-overlay" width="256" height="256"></canvas><figcaption>Deteksi minyak</figcaption></figure>
-            <figure class="card"><canvas id="c-prob" width="256" height="256"></canvas><figcaption>Peta probabilitas</figcaption></figure>
-            <figure class="card" id="fig-gt" hidden><canvas id="c-gt" width="256" height="256"></canvas><figcaption>Ground truth (label)</figcaption></figure>
+          <div class="card sim-view">
+            <canvas id="sim-canvas" width="720" height="520"></canvas>
+            <div class="timeline">
+              <button class="btn small primary" id="sim-play">▶ Putar</button>
+              <input type="range" id="sim-hour" data-sim min="0" max="12" step="0.1" value="0" />
+              <b id="sim-hour-val">+0 jam</b>
+            </div>
+            <div class="legend">
+              <span><i class="lg now"></i>posisi pada jam terpilih</span><span><i class="lg past"></i>posisi awal</span>
+              <span><i class="lg fut"></i>jejak +⅓, +⅔, +1 horizon</span><span><i class="lg boom"></i>oil boom saat tim tiba</span>
+            </div>
           </div>
+          <div class="card sim-out" id="sim-out"></div>
+        </div>
+        <details class="card method">
+          <summary>Rumus &amp; batasan simulasi</summary>
+          <ul>
+            <li><b>Drift:</b> v<sub>slick</sub> = 0,03 · v<sub>angin</sub> + v<sub>arus</sub> (aturan praktis yang juga dipakai model trajektori seperti NOAA GNOME). Arah angin memakai konvensi meteorologi (arah asal angin).</li>
+            <li><b>Penyebaran:</b> Fay (1971) rezim gravitasi-viskos: A(t) = π·k₂²·(Δ·g·V²/√ν)<sup>1/3</sup>·t<sup>1/2</sup>, k₂ = 1,45, Δ = (ρ<sub>air</sub> − ρ<sub>minyak</sub>)/ρ<sub>air</sub>. Umur slick saat terdeteksi dihitung balik dari luas terdeteksi, lalu luas diproyeksikan ke depan.</li>
+            <li><b>Difusi turbulen:</b> ΔA = 8πK·t (patch Gaussian, radius 2σ, σ² = 2Kt), dengan K dari hukum skala Okubo (1971): K = 0,0103·L<sup>1,15</sup> cm²/s, L = diameter ekuivalen slick. Untuk slick tipis yang sudah melebar, pelebaran berikutnya lebih banyak disebabkan turbulensi permukaan daripada gaya gravitasi.</li>
+            <li><b>Volume:</b> luas terdeteksi × ketebalan menurut kode penampakan Bonn Agreement (dipilih pengguna, karena SAR tidak mengukur ketebalan).</li>
+            <li><b>Oil boom:</b> 1,3 × keliling <i>convex hull</i> slick prediksi saat tim tiba (kelonggaran untuk tambatan &amp; lekukan). Boom penahan umumnya mulai bocor bila arus relatif &gt; 0,7 knot.</li>
+            <li><b>Batasan:</b> tidak memodelkan penguapan, emulsifikasi, garis pantai, variasi angin/arus dalam waktu, maupun turbulensi. Dataset SOS tidak memiliki koordinat &amp; waktu akuisisi sehingga simulasi tidak bisa divalidasi terhadap kejadian nyata. Gunakan sebagai gambaran awal, lalu perbarui dengan data cuaca/oseanografi dan citra berikutnya.</li>
+          </ul>
+        </details>
+      </div>
+    </section>
 
-          <div class="results">
-            <div class="result card"><span>Area terdeteksi</span><b id="area">-</b></div>
-            <div class="result card"><span>Waktu inferensi</span><b id="latency">-</b></div>
-            <div class="result card" id="dice-row" hidden><span>Kecocokan dengan label (Dice)</span><b id="dice">-</b><small id="dice-ref"></small></div>
+    <!-- EFISIENSI & RISIKO -->
+    <section id="efisiensi" class="section alt">
+      <div class="wrap" id="hse">
+        <div class="section-head">
+          <div><span class="eyebrow">03 · Nilai bisnis</span><h2>Efisiensi biaya &amp; manajemen risiko</h2></div>
+          <span class="muted">Semua angka default = asumsi ilustratif, silakan ubah</span>
+        </div>
+
+        <div class="cost-grid">
+          <div class="card cost-in">
+            <h3>Asumsi pemantauan per bulan</h3>
+            <label class="field"><span>Sortie patroli udara/laut per bulan</span> <input type="number" id="c-sorties" min="0" value="12" /></label>
+            <label class="field"><span>Durasi per sortie (jam)</span> <input type="number" id="c-hours" min="0" step="0.5" value="4" /></label>
+            <label class="field"><span>Biaya operasi per jam (juta Rp)</span> <input type="number" id="c-costhr" min="0" value="45" /></label>
+            <label class="field"><span>Personel per sortie</span> <input type="number" id="c-crew" min="0" value="4" /></label>
+            <h3>Dengan computer vision</h3>
+            <label class="field"><span>Citra Sentinel-1 dianalisis per bulan</span> <input type="number" id="c-scenes" min="0" value="10" /></label>
+            <label class="field"><span>Waktu verifikasi analis per citra (jam)</span> <input type="number" id="c-analyst" min="0" step="0.25" value="0.5" /></label>
+            <label class="field"><span>Biaya analis per jam (ribu Rp)</span> <input type="number" id="c-analystcost" min="0" value="150" /></label>
+            <label class="field"><span>Sortie konfirmasi yang masih dibutuhkan (%)</span> <input type="number" id="c-confirm" min="0" max="100" value="25" /></label>
+            <small class="muted">Citra Sentinel-1 gratis (Copernicus open data). Inferensi berjalan di browser sehingga biaya komputasinya praktis nol.</small>
           </div>
-          <p class="note">⚠ Alat bantu screening, bukan pengganti analis. Area gelap alami (angin lemah, lapisan biogenik) dapat terdeteksi sebagai minyak. Model dilatih pada Sentinel-1A Persian Gulf.</p>
+          <div class="card cost-res">
+            <h3>Hasil perbandingan</h3>
+            <div id="c-out"></div>
+            <p class="muted small">CV tidak menghapus patroli sepenuhnya: sortie konfirmasi tetap dibutuhkan untuk verifikasi, pengambilan sampel, dan respons. Yang berkurang adalah sortie <em>pencarian</em> rutin.</p>
+          </div>
+        </div>
+
+        <div class="risk-grid">
+          <div class="card">
+            <h3>Register risiko HSSE (L × S, skala 1–5)</h3>
+            <table class="risk-table" id="risk-table"></table>
+            <p class="muted small" id="risk-note"></p>
+          </div>
+          <div class="card">
+            <h3>Matriks risiko 5 × 5</h3>
+            <div class="risk-matrix" id="risk-matrix"></div>
+            <div class="legend"><span><i class="dot b">n</i>sebelum</span><span><i class="dot a">n</i>sesudah CV</span></div>
+            <ul class="controls-list">
+              <li><b>Eliminasi paparan:</b> pencarian slick dipindah dari lapangan ke analisis citra (hierarki pengendalian tertinggi).</li>
+              <li><b>Pengendalian teknis:</b> alarm otomatis + poligon & estimasi boom mempercepat keputusan.</li>
+              <li><b>Administratif:</b> verifikasi analis untuk setiap alarm, sortie konfirmasi hanya bila perlu.</li>
+              <li><b>Risiko baru</b> (salah deteksi) dicatat dan dikendalikan, bukan diabaikan.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- HASIL -->
     <section id="hasil" class="section">
-      <div class="section-head"><h2>Performa Model</h2><span class="muted">839 citra test Sentinel-1 · threshold 0,45</span></div>
-      <div class="card table-card">
-        <table>
-          <thead><tr><th>Model</th><th>Dice</th><th>IoU</th><th>Precision</th><th>Recall</th><th>Ukuran</th></tr></thead>
-          <tbody>
-            <tr class="hl"><td>U-Net Lite INT8 <em>(web)</em></td><td>0,8545</td><td>0,7459</td><td>0,8062</td><td>0,9090</td><td>2,01 MB</td></tr>
-            <tr><td>U-Net Lite FP32</td><td>0,8547</td><td>0,7462</td><td>0,8058</td><td>0,9099</td><td>7,77 MB</td></tr>
-            <tr><td>Baseline dark-spot threshold</td><td>0,7259</td><td>0,5698</td><td>0,6669</td><td>0,7964</td><td>–</td></tr>
-          </tbody>
-        </table>
+      <div class="wrap">
+        <div class="section-head">
+          <div><span class="eyebrow">04 · Evaluasi</span><h2>Performa model: Machine Learning vs Deep Learning</h2></div>
+          <span class="muted">839 citra test Sentinel-1 · threshold dipilih di validation</span>
+        </div>
+        <div class="perf-grid">
+          <div class="card table-card">
+            <table>
+              <thead><tr><th>Model</th><th>Dice</th><th>IoU</th><th>Precision</th><th>Recall</th><th>Dice PALSAR*</th><th>Ukuran web</th><th>CPU 1 thread</th></tr></thead>
+              <tbody id="results-body"></tbody>
+            </table>
+            <p class="muted small">*Uji lintas sensor: model hanya dilatih dengan Sentinel-1, lalu diuji pada 776 citra ALOS PALSAR. Latency diukur di CPU Colab (ONNX Runtime, batch 1).</p>
+          </div>
+          <div class="card chart-card"><h3>Dice test Sentinel-1</h3><div id="chart"></div></div>
+        </div>
       </div>
     </section>
 
     <!-- CARA KERJA -->
-    <section id="cara" class="section">
-      <div class="section-head"><h2>Cara Kerja</h2></div>
-      <div class="steps">
-        <div class="card step"><i>01</i><h4>Citra satelit</h4><p>Sentinel-1 SAR memotret laut siang-malam, menembus awan. Minyak tampak gelap karena meredam gelombang.</p></div>
-        <div class="card step"><i>02</i><h4>Segmentasi AI</h4><p>U-Net ringan menandai setiap piksel: minyak atau laut.</p></div>
-        <div class="card step"><i>03</i><h4>Peta & luas</h4><p>Hasil berupa peta area tercemar dan estimasi luas (km²) sebagai dasar respons HSSE.</p></div>
-        <div class="card step"><i>04</i><h4>Edge AI</h4><p>Model dikuantisasi INT8 (2 MB) dan berjalan di browser via WebAssembly — tanpa GPU cloud.</p></div>
+    <section id="cara" class="section alt">
+      <div class="wrap">
+        <div class="section-head"><div><span class="eyebrow">05 · Alur</span><h2>Cara kerja</h2></div></div>
+        <div class="steps">
+          <div class="card step"><i>01</i><h4>Citra satelit</h4><p>Sentinel-1 SAR memotret laut siang-malam dan menembus awan. Minyak tampak gelap karena meredam riak gelombang.</p></div>
+          <div class="card step"><i>02</i><h4>Segmentasi ML / DL</h4><p>Random Forest &amp; LightGBM memakai 13 fitur tekstur buatan; U-Net &amp; DeepLabV3+ belajar fitur sendiri.</p></div>
+          <div class="card step"><i>03</i><h4>Poligon &amp; luas</h4><p>Mask diubah jadi poligon per slick: luas, keliling, dan GeoJSON siap dipakai di GIS.</p></div>
+          <div class="card step"><i>04</i><h4>Simulasi &amp; boom</h4><p>Proyeksi drift &amp; penyebaran memberi arah gerak dan kebutuhan oil boom untuk tim HSSE.</p></div>
+        </div>
       </div>
     </section>
 
     <!-- TIM -->
     <section id="tim" class="section">
-      <div class="section-head"><h2>Tim CAYMAN</h2><span class="muted">Kelompok 1 · S1 Sains Data</span></div>
-      <div id="team" class="team"></div>
+      <div class="wrap">
+        <div class="section-head"><div><span class="eyebrow">06 · Tim</span><h2>Tim CAYMAN</h2></div><span class="muted">Kelompok 1 · S1 Sains Data</span></div>
+        <div id="team" class="team"></div>
+      </div>
     </section>
   </main>
 
-  <footer class="wrap footer">
-    Dataset: Deep-SAR SOS Oil Spill Detection Dataset (Kaggle, CC BY 4.0) · Kelompok 1 CAYMAN · Tugas Besar Deep Learning — UPN Veteran Jawa Timur
+  <footer class="footer">
+    <div class="wrap">Dataset: Deep-SAR SOS Oil Spill Detection Dataset (Kaggle, CC BY 4.0) · Kelompok 1 CAYMAN · Tugas Besar Deep Learning — UPN "Veteran" Jawa Timur</div>
   </footer>
 
-  <script src="app.js?v=8"></script>
+  <script src="geo.js?v=22"></script>
+  <script src="sim.js?v=22"></script>
+  <script src="hse.js?v=22"></script>
+  <script src="app.js?v=22"></script>
+  <script>
+    // pelampung oil boom pada ilustrasi hero
+    (() => {
+      const p = document.querySelector(".hero-art .boom path"), g = document.getElementById("floats"), L = p.getTotalLength();
+      for (let i = 0; i < 34; i++) { const q = p.getPointAtLength((i / 34) * L); g.insertAdjacentHTML("beforeend", `<circle cx="${q.x}" cy="${q.y}" r="5.5" fill="#fb923c" stroke="#9a3412" stroke-width="1.5"/>`); }
+    })();
+  </script>
 </body>
 </html>

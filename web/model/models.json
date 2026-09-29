@@ -1,0 +1,224 @@
+{
+ "default": "unet_lite",
+ "preprocessing": {
+  "raw": "float32 piksel 0-255 (channel R), shape [1,1,256,256]",
+  "normalized": "(x/255 - 0.383440) / 0.201973, shape [1,1,256,256]",
+  "mean": 0.383440284836608,
+  "std": 0.2019732132211145
+ },
+ "output": {
+  "prob": "probabilitas minyak langsung",
+  "logits": "prob = sigmoid(logits)"
+ },
+ "env": {
+  "onnxruntime": "1.30.0",
+  "onnx": "1.23.0",
+  "torch": "2.11.0+cu128",
+  "cpu_count": 2,
+  "latency_protocol": "batch 1, 3 warm-up + 20 run, median/p90 sess.run() tanpa pre/post-processing, CPU Colab"
+ },
+ "models": [
+  {
+   "id": "dark_spot",
+   "name": "Dark-spot threshold",
+   "family": "baseline",
+   "description": "Blur 7x7 lalu piksel lebih gelap dari ambang dianggap minyak. Tanpa training.",
+   "file": "dark_spot.onnx",
+   "size_mb": 0.0,
+   "input": "raw",
+   "output": "prob",
+   "threshold": 0.5,
+   "n_params": 1,
+   "train_minutes": null,
+   "metrics_test_sentinel": {
+    "dice": 0.7259318057624219,
+    "iou": 0.5697746863517228,
+    "precision": 0.6669284984680931,
+    "recall": 0.796388463969705,
+    "dice_macro": 0.5605023440240265,
+    "pr_auc": null
+   },
+   "metrics_palsar_cross_sensor": {
+    "dice": 0.6410177331964575
+   },
+   "onnx_check": {
+    "onnx_test_dice": 0.7259318057624219,
+    "onnx_test_iou": 0.5697746863517228,
+    "pixel_agreement_vs_notebook": 1.0,
+    "checked_on": "test 839"
+   },
+   "cpu_latency_ms_colab": {
+    "one_thread": {
+     "median": 0.34,
+     "p90": 0.42
+    },
+    "all_threads": {
+     "median": 0.33,
+     "p90": 0.35
+    }
+   }
+  },
+  {
+   "id": "random_forest",
+   "name": "Random Forest",
+   "family": "machine_learning",
+   "description": "20 pohon keputusan, klasifikasi per piksel dari 13 fitur buatan tangan.",
+   "file": "random_forest.onnx",
+   "size_mb": 1.829,
+   "input": "raw",
+   "output": "prob",
+   "threshold": 0.4,
+   "n_params": 46556,
+   "train_minutes": 0.92,
+   "metrics_test_sentinel": {
+    "dice": 0.8035775287402379,
+    "iou": 0.6716503142022385,
+    "precision": 0.7720918190649072,
+    "recall": 0.8377403697575617,
+    "dice_macro": 0.6771979432570789,
+    "pr_auc": 0.898134137714504
+   },
+   "metrics_palsar_cross_sensor": {
+    "dice": 0.7505741561274845
+   },
+   "onnx_check": {
+    "onnx_test_dice": 0.7901300312774343,
+    "notebook_test_dice_same_subset": 0.7901591998933901,
+    "pixel_agreement_vs_notebook": 0.9998503112792969,
+    "max_abs_prob_diff": 0.08996862173080444,
+    "checked_on": "subset acak 100 citra test (seed 42), 22s"
+   },
+   "cpu_latency_ms_colab": {
+    "one_thread": {
+     "median": 217.98,
+     "p90": 254.22
+    },
+    "all_threads": {
+     "median": 217.25,
+     "p90": 224.01
+    }
+   }
+  },
+  {
+   "id": "lightgbm",
+   "name": "LightGBM",
+   "family": "machine_learning",
+   "description": "100 pohon gradient boosting pada 13 fitur buatan tangan yang sama.",
+   "file": "lightgbm.onnx",
+   "size_mb": 0.242,
+   "input": "raw",
+   "output": "prob",
+   "threshold": 0.35,
+   "n_params": 3100,
+   "train_minutes": 0.17,
+   "metrics_test_sentinel": {
+    "dice": 0.805628605420621,
+    "iou": 0.6745210150518873,
+    "precision": 0.7568206946121722,
+    "recall": 0.8611658075977575,
+    "dice_macro": 0.6739850460118215,
+    "pr_auc": 0.9019786243529235
+   },
+   "metrics_palsar_cross_sensor": {
+    "dice": 0.7489775213731455
+   },
+   "onnx_check": {
+    "onnx_test_dice": 0.7894283984810219,
+    "notebook_test_dice_same_subset": 0.7894225198914318,
+    "pixel_agreement_vs_notebook": 0.9998576354980468,
+    "max_abs_prob_diff": 0.1504148244857788,
+    "checked_on": "subset acak 100 citra test (seed 42), 39s"
+   },
+   "cpu_latency_ms_colab": {
+    "one_thread": {
+     "median": 348.97,
+     "p90": 490.79
+    },
+    "all_threads": {
+     "median": 346.19,
+     "p90": 481.64
+    }
+   }
+  },
+  {
+   "id": "unet_lite",
+   "name": "U-Net Lite",
+   "family": "deep_learning",
+   "description": "U-Net ringan 1,94 juta parameter, dilatih dari nol. Model utama.",
+   "file": "unet_lite_int8_qdq.onnx",
+   "size_mb": 2.009,
+   "input": "normalized",
+   "output": "logits",
+   "threshold": 0.45,
+   "n_params": 1942289,
+   "train_minutes": 10.02,
+   "metrics_test_sentinel": {
+    "dice": 0.8546599415353939,
+    "iou": 0.7462062775322069,
+    "precision": 0.8057744951794317,
+    "recall": 0.909860149266584,
+    "dice_macro": 0.7608931443967645,
+    "pr_auc": 0.936058369460025
+   },
+   "metrics_palsar_cross_sensor": {
+    "dice": 0.7773567316178741
+   },
+   "onnx_check": {
+    "variant": "int8",
+    "onnx_test_dice": 0.8545,
+    "onnx_test_iou": 0.7459,
+    "checked_on": "test 839 (v1)"
+   },
+   "cpu_latency_ms_colab": {
+    "one_thread": {
+     "median": 50.11,
+     "p90": 59.63
+    },
+    "all_threads": {
+     "median": 47.52,
+     "p90": 52.66
+    }
+   }
+  },
+  {
+   "id": "deeplabv3p_mnv2",
+   "name": "DeepLabV3+ MobileNetV2",
+   "family": "deep_learning",
+   "description": "Encoder MobileNetV2 pretrained ImageNet (transfer learning) + decoder DeepLabV3+.",
+   "file": "deeplabv3p_mnv2_int8_qdq.onnx",
+   "size_mb": 4.837,
+   "input": "normalized",
+   "output": "logits",
+   "threshold": 0.5,
+   "n_params": 4377937,
+   "train_minutes": 10.59,
+   "metrics_test_sentinel": {
+    "dice": 0.8667171305447086,
+    "iou": 0.7647844628246195,
+    "precision": 0.8344005938260876,
+    "recall": 0.9016377797281807,
+    "dice_macro": 0.7677595945607354,
+    "pr_auc": 0.94787535355962
+   },
+   "metrics_palsar_cross_sensor": {
+    "dice": 0.7975368746905798
+   },
+   "onnx_check": {
+    "variant": "int8",
+    "onnx_test_dice": 0.8672542650223529,
+    "onnx_test_iou": 0.7656213025065742,
+    "checked_on": "test 839"
+   },
+   "cpu_latency_ms_colab": {
+    "one_thread": {
+     "median": 26.03,
+     "p90": 28.53
+    },
+    "all_threads": {
+     "median": 28.85,
+     "p90": 30.77
+    }
+   }
+  }
+ ]
+}
