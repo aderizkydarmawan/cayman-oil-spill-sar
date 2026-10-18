@@ -1,0 +1,15 @@
+id,lokasi,tgl_mulai,tgl_akhir,lon_min,lat_min,lon_max,lat_max,jenis,sumber
+balikpapan_2018,Teluk Balikpapan,2018-03-31,2018-04-10,116.70,-1.45,117.10,-1.05,pipa putus (sudah diuji),https://www.maritime-executive.com/article/anchor-may-have-caused-balikpapan-pipeline-breach
+karawang_2019,Karawang YYA-1,2019-07-12,2019-09-30,106.90,-6.20,107.90,-5.60,sumur bocor (sudah diuji),https://ekonomi.bisnis.com/read/20200812/44/1278455/phe-oses-sebut-tumpahan-minyak-pulau-seribu-bukan-dari-sumur-yya-1
+seribu_2020a,Kepulauan Seribu (Pari & Tidung),2020-08-08,2020-08-14,106.45,-5.95,106.75,-5.70,gumpalan minyak di pantai,https://news.republika.co.id/berita/qf9eav330/tumpahan-minyak-buat-biota-laut-di-kepulauan-seribu-mati
+seribu_2020b,Kepulauan Seribu (Panggang & Pramuka; jalur pipa Zulu-Papa),2020-10-10,2020-10-16,106.45,-5.85,106.75,-5.55,titik oil spill dari pemantauan udara,https://pasardana.id/news/2020/10/16/pertamina-cek-langsung-laporan-tumpahan-minyak-di-kepulauan-seribu
+karawang_2021,Karawang (PHE),2021-04-20,2021-04-27,106.90,-6.20,107.90,-5.60,tumpahan ditangani PHE,https://ekonomi.bisnis.com/read/20210425/44/1385945/pertamina-hulu-energi-tangani-tumpahan-minyak-di-karawang
+lampung_2021,Pesisir Lampung (Selatan/Timur),2021-08-30,2021-09-14,105.50,-6.00,106.10,-5.10,limbah hitam di pantai,https://news.republika.co.id/berita/qzf620423/klhkpolri-selidiki-pencemaran-pesisir-lampung
+lampung_2022,Lampung Timur (Labuhan Maringgai; dugaan pipa PHE OSES),2022-07-10,2022-07-17,105.70,-5.60,106.10,-5.10,limbah minyak 6 titik,https://www.medcom.id/nasional/daerah/3NOPZ00b-6-titik-di-pesisir-labuhan-maringgai-lampung-tercemar-limbah-minyak
+bintan_2022,Bintan (Malang Rapat),2022-02-25,2022-03-14,104.40,0.80,104.80,1.30,sludge oil musiman,https://mongabay.co.id/2022/03/14/sudah-10-tahun-limbah-minyak-hitam-cemari-laut-bintan/
+batam_2022,Batam (Tanjung Uncang),2022-12-01,2022-12-10,103.80,0.95,104.20,1.25,sludge oil,https://www.mongabay.co.id/2022/12/10/tumpahan-minyak-hitam-kembali-cemari-laut-batam-siapa-pelakunya/
+batam_2023,Batam (Nongsa),2023-04-28,2023-05-04,104.00,1.05,104.30,1.30,sludge oil,https://www.mongabay.co.id/2024/03/27/minyak-hitam-kembali-cemari-laut-bintan-bagaimana-solusinya/
+bintan_2023,Bintan Utara (Semelur),2023-12-01,2024-01-31,104.30,1.05,104.80,1.35,buangan ballast tanker (dipetakan Sentinel-1 oleh UNRI),https://natur.ejournal.unri.ac.id/index.php/natur/article/view/1446
+bintan_2024,Bintan,2024-02-25,2024-03-10,104.30,0.90,104.80,1.30,sludge oil,https://www.mongabay.co.id/2024/03/27/minyak-hitam-kembali-cemari-laut-bintan-bagaimana-solusinya/
+singapura_2024,Singapura Pasir Panjang (Marine Honour; dekat perairan Batam),2024-06-14,2024-06-20,103.60,1.10,104.10,1.35,tabrakan kapal ±400 t IFO,https://www.itopf.org/in-action/case-studies/marine-honour-singapore-2024/
+batam_2026,Batam (Sekupang; LCT Mutiara Garlib Samudera karam),2026-01-30,2026-02-06,103.80,1.05,104.10,1.25,kapal limbah minyak karam,https://mongabay.co.id/2026/02/06/limbah-minyak-mentah-berceceran-di-perairan-laut-kepri/

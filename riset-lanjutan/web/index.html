@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <title>Pantau Bercak Minyak</title>
+  <meta name="description" content="Prototipe riset: menemukan dugaan bercak minyak di laut dari citra radar satelit Sentinel-1 dan mengurutkan mana yang sebaiknya dicek lebih dulu." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <link rel="stylesheet" href="style.css?v=6" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+</head>
+<body>
+  <nav class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#top"><span class="brand-drop"></span>Pantau Bercak Minyak</a>
+      <div class="links"><a class="balik" href="https://cayman-kelompok1.vercel.app">Kembali ke CAYMAN</a><a href="#peta">Peta</a><a href="#cara">Cara kerja</a><a href="#percaya">Hasil uji</a><a href="#ragu">Yang belum pasti</a><a href="#sebaran">Prakiraan sebaran</a><a href="#data">Sumber data</a></div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <span class="status">Prototipe riset dengan data satelit publik, bukan produk resmi Pertamina</span>
+          <h1>Dari citra radar satelit ke daftar bercak minyak yang perlu dicek.</h1>
+          <p class="lead">Satelit radar Sentinel-1 memotret laut Indonesia setiap ±6–12 hari, menembus awan maupun gelap malam. Minyak meredam riak kecil di permukaan laut, sehingga tampak <b>lebih gelap</b> di citra radar. Alat ini menandai bercak gelap yang mirip minyak, lalu mengurutkan mana yang sebaiknya dicek lebih dulu. Tidak ada bercak yang disembunyikan.</p>
+          <p><a href="#peta">Buka peta lintasan</a> &nbsp;·&nbsp; <a href="#ragu">Baca yang belum pasti</a></p>
+        </div>
+        <figure class="citra">
+          <img src="data/hero_balikpapan.jpg" width="1200" height="771" alt="Citra radar Sentinel-1 Teluk Balikpapan, 1 April 2018: bercak minyak gelap yang memanjang ditandai garis merah oleh alat" />
+          <figcaption>Teluk Balikpapan, 1 April 2018, sehari setelah pipa minyak mentah putus. Latar abu-abu adalah citra radar Sentinel-1; <b>garis merah</b> adalah bercak yang ditandai alat ini secara otomatis. Titik putih terang umumnya kapal atau bangunan di laut.</figcaption>
+        </figure>
+      </div>
+      <div class="spek">
+        <div><b>73–81%</b><span>tumpahan berlabel ahli ikut tertangkap, diuji pada 2 kumpulan data terpisah (±3.300 tumpahan)</span></div>
+        <div><b>92%</b><span>area yang ditandai alat memang minyak, pada data independen</span></div>
+        <div><b>±1 dari 20</b><span>citra laut berangin tanpa minyak memunculkan alarm palsu</span></div>
+        <div><b>14</b><span>kejadian nyata di Indonesia &amp; sekitarnya ikut dicoba</span></div>
+      </div>
+      <div class="peringatan"><b>Penting dibaca dulu.</b> Semua hasil di halaman ini adalah <b>dugaan dari citra satelit</b>, bukan kepastian tumpahan. Alat ini belum pernah dicocokkan dengan pengecekan di lapangan. Pakai sebagai bahan untuk memutuskan apa yang dicek lebih dulu, bukan sebagai bukti. Daftar hal yang belum pasti ada di bagian <a href="#ragu">Yang belum pasti</a>.</div>
+    </div>
+  </header>
+
+  <section class="section alt" id="peta">
+    <div class="wrap">
+      <h2>Peta lintasan satelit</h2>
+      <p class="lead small">Pilih satu lintasan di kiri. Klik bercak di peta atau baris di tabel untuk melihat penjelasannya.</p>
+      <div class="baca">
+        <span style="--c:#ef4444"><b>Merah</b>: prioritas tinggi, cek lebih dulu</span>
+        <span style="--c:#cbd5e1"><b>Abu-abu</b>: prioritas rendah, tetap bisa minyak, jangan diabaikan</span>
+        <span style="--c:#8a9099">Latar abu-abu: citra radar (makin gelap = permukaan makin licin)</span>
+      </div>
+      <div class="peta-grid">
+        <aside id="daftar" class="daftar" aria-label="Daftar lintasan"></aside>
+        <div class="peta-kolom">
+          <div id="info" class="info"></div>
+          <div id="map" class="map" role="region" aria-label="Peta bercak"></div>
+          <label class="toggle"><input type="checkbox" id="tampil-palsu" checked /> Tampilkan bercak prioritas rendah</label>
+          <label class="toggle" id="label-optik" style="display:none"><input type="checkbox" id="tampil-optik" /> <span>Tampilkan foto satelit biasa (Sentinel-2)</span></label>
+          <div class="tabel-wrap"><table id="tabel"><thead><tr><th>No</th><th>Prioritas</th><th>Luas (km²)</th><th>Jarak ke pantai (km)</th><th title="Seberapa jauh lebih gelap dari laut di sekitarnya, dalam desibel">Lebih gelap dari sekitar (dB)</th><th title="0 sampai 1; makin tinggi makin mirip tumpahan">Skor (0–1)</th></tr></thead><tbody></tbody></table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="cara">
+    <div class="wrap">
+      <h2>Cara kerja, dalam 6 langkah</h2>
+      <p class="lead small">Semua langkah otomatis dan memakai data satelit yang terbuka untuk umum.</p>
+      <ol class="langkah">
+        <li><b>Ambil citra radar</b>Citra Sentinel-1 (resolusi 20 m) untuk wilayah dan tanggal yang dipilih diambil lewat Google Earth Engine.</li>
+        <li><b>Tandai area gelap</b>Model kecerdasan buatan pengenal gambar (jenis U-Net) menandai permukaan laut yang licin. Model ini dilatih dari ribuan contoh tumpahan yang sudah ditandai. Area di tepi citra dibuang karena sering keliru.</li>
+        <li><b>Beri skor dan urutkan</b>Tiap bercak diukur: luas, bentuk, dan seberapa gelap dibanding laut sekitarnya. Model kedua, yang belajar dari ±20 ribu bercak berlabel ahli di Laut Mediterania, memberi skor 0–1. Bercak ≥10 km² selalu masuk prioritas tinggi.</li>
+        <li><b>Jelaskan skornya</b>Tiap bercak diberi dua alasan utama skornya (dihitung dengan metode SHAP), misalnya "menaikkan skor: kontras tinggi dengan laut sekitar" atau "menurunkan skor: dekat pantai".</li>
+        <li><b>Tambahkan konteks</b>Penanda hujan dari satelit GPM (hujan juga membuat bercak gelap), jarak ke hutan mangrove terdekat (≤5 km = pesisir sensitif), dan foto satelit biasa Sentinel-2 bila ada dalam ±1 hari.</li>
+        <li><b>Serahkan untuk dicek</b>Hasilnya peta, tabel koordinat, dan laporan yang bisa diteruskan. Kepastiannya tetap lewat patroli, foto udara, atau lintasan satelit berikutnya.</li>
+      </ol>
+      <div class="istilah">
+        <div><b>Look-alike</b>: bercak gelap yang mirip minyak tetapi bukan minyak, misalnya laut tenang tanpa angin, lapisan alga, atau jejak hujan.</div>
+        <div><b>"Tertangkap" (recall)</b>: dari semua tumpahan yang benar-benar ada, berapa persen yang berhasil ditandai alat.</div>
+        <div><b>Uji independen</b>: pengujian pada data dari peneliti lain yang tidak pernah dipakai untuk melatih alat, supaya alat tidak "menilai dirinya sendiri".</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="percaya">
+    <div class="wrap">
+      <h2>Hasil uji: seberapa bisa dipercaya?</h2>
+      <div class="kartu-grid">
+        <div class="kartu"><div class="angka-besar">73–81%</div><h3>Menemukan tumpahan</h3>
+          <ul><li>Data Mediterania, 2.630 tumpahan yang ditandai ahli: <b>73%</b> tertangkap.</li>
+          <li>Uji independen (data Trujillo-Acatitla dkk., 670 tumpahan): <b>81%</b> tertangkap. 92% area yang ditandai memang minyak.</li>
+          <li>14 kejadian di Indonesia &amp; sekitarnya: terlihat jelas di <b>3</b>, mungkin terlihat di <b>2</b>.</li>
+          <li>Gumpalan minyak yang sudah sampai di pantai (Batam, Bintan, Lampung) <b>tidak</b> terlihat. Radar hanya melihat lapisan minyak di permukaan laut.</li></ul></div>
+        <div class="kartu"><div class="angka-besar">8</div><h3>Alarm palsu: bercak per lintasan pada hari biasa</h3>
+          <ul><li>Laut berangin tanpa minyak: hampir tidak ada alarm (±1 per 20 citra).</li>
+          <li>Perairan Indonesia pada hari biasa: rata-rata (median) <b>8</b> bercak per lintasan, dan sebagian besar bukan minyak.</li>
+          <li>Skor prioritas menaruh ±73% bercak bukan-minyak di prioritas rendah, tetapi ±25% minyak sungguhan juga ikut ke sana.</li>
+          <li>Penyebab utama alarm palsu: angin lemah, teluk tertutup, dan pesisir pulau kecil. Hujan hanya menjelaskan sebagian kecil (Balikpapan 11%, Karawang 1,5% bercak hari biasa).</li></ul></div>
+        <div class="kartu"><div class="angka-besar">6–12 hari</div><h3>Batas pemakaian: jeda antarlintasan satelit</h3>
+          <ul><li>Satelit lewat setiap 6–12 hari. Ini <b>bukan pemantauan langsung (real-time)</b>.</li>
+          <li>Alat ini <b>tidak menentukan sumber</b> tumpahan atau pihak yang bertanggung jawab.</li>
+          <li>Saat laut sangat tenang, hampir seluruh laut tampak gelap dan bercak tidak bisa dinilai. Lintasan seperti ini diberi tanda khusus.</li></ul></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="ragu">
+    <div class="wrap">
+      <h2>Yang belum pasti dan perlu tinjauan ahli</h2>
+      <p class="lead small">Bagian ini sengaja ditulis terbuka agar pembaca tahu batas kepercayaan setiap hasil sebelum memakainya.</p>
+      <div class="ragu-grid">
+        <div class="ragu"><h3>1. Belum ada pengecekan lapangan</h3>
+          <p>Semua angka berasal dari data satelit dan label peneliti lain. Belum ada satu pun bercak di Indonesia yang dicocokkan dengan pengamatan langsung di lokasi pada waktu yang sama.</p>
+          <span class="butuh">Perlu: data patroli/insiden internal</span></div>
+        <div class="ragu"><h3>2. Contoh lokal masih sangat sedikit</h3>
+          <p>Hanya 24 bercak di perairan Indonesia yang berlabel minyak. Angka ketepatan di atas sebagian besar diukur di luar Indonesia, dengan kondisi laut yang berbeda.</p>
+          <span class="butuh">Perlu: penilaian praktisi atas 40 bercak contoh</span></div>
+        <div class="ragu"><h3>3. Skor prioritas belum lulus uji</h3>
+          <p>Pada uji independen, bercak prioritas tinggi baru mencakup 76% luas minyak sungguhan (target 90%). Karena itu skor hanya dipakai untuk mengurutkan, <b>tidak untuk membuang</b> bercak.</p>
+          <span class="butuh">Perlu: lebih banyak contoh lokal untuk melatih ulang</span></div>
+        <div class="ragu"><h3>4. Perairan dekat pantai berbeda dari data latih</h3>
+          <p>97% bercak di perairan Indonesia berjarak kurang dari 10 km dari pantai. Di data latih, hanya 10% yang sedekat itu. Perilaku alat di pesisir, termasuk area tambak yang kadang ikut tertandai, belum teruji dengan baik.</p>
+          <span class="butuh">Perlu: tinjauan ahli penginderaan jauh</span></div>
+        <div class="ragu"><h3>5. Penanda laut tenang ikut menandai tumpahan</h3>
+          <p>Aturan "laut tenang" (lebih dari 15% laut tampak gelap) juga menandai ±16% citra yang sebenarnya berisi tumpahan. Lintasan seperti ini tetap perlu dilihat manusia.</p>
+          <span class="butuh">Perlu: data angin lokal yang lebih rapat</span></div>
+        <div class="ragu"><h3>6. Prakiraan arah sebaran belum bisa dipakai</h3>
+          <p>Uji model sebaran di dua lokasi belum lebih baik dari tebakan sederhana. Data arus yang memasukkan pasang surut baru tersedia sejak akhir 2020, dan sejak itu belum ada kejadian yang bisa dipakai untuk menguji (lihat <a href="#sebaran">Prakiraan sebaran</a>).</p>
+          <span class="butuh">Perlu: kejadian baru dengan dua lintasan satelit berdekatan</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt" id="sebaran">
+    <div class="wrap">
+      <h2>Bisakah memprakirakan ke mana minyak bergerak?</h2>
+      <p class="lead small">Kami menguji model sebaran minyak OpenDrift/OpenOil, yang menggerakkan ribuan "partikel minyak" mengikuti arus laut dan angin. Partikel dilepas dari bercak di satu citra, lalu posisinya dibandingkan dengan bercak yang terlihat di lintasan satelit berikutnya. Data arus yang dipakai berasal dari model HYCOM (harian, ±9 km, tanpa pasang surut), dan data angin dari ERA5 (per jam).</p>
+      <div class="kartu-grid">
+        <div class="kartu"><h3>Karawang 2019 (laut terbuka, jeda 3,5 hari)</h3>
+          <ul><li>95% partikel <b>terdampar di pantai Karawang</b>, karena bercak dekat pantai dan angin mengarah ke darat.</li>
+          <li>Partikel model menjangkau 5% luas bercak laut berikutnya. Tebakan "bercak diam di tempat" menjangkau 18%.</li></ul></div>
+        <div class="kartu"><h3>Teluk Balikpapan 2018 (jeda 12 hari)</h3>
+          <ul><li>4% partikel mengenai bercak berikutnya, sedangkan tebakan "diam di tempat" 47%.</li>
+          <li>Sebagian besar partikel hanyut ke selatan sampai keluar batas data arus.</li></ul></div>
+        <div class="kartu"><h3>Artinya untuk lapangan</h3>
+          <ul><li>Untuk saat ini model <b>tidak bisa menunjuk posisi bercak</b> di laut.</li>
+          <li>Model bisa dipakai sebagai peringatan kasar <b>pantai mana yang mungkin terkena</b>.</li>
+          <li>Perbaikan berikutnya adalah arus per jam yang memasukkan pasang surut (Copernicus Marine). Datanya sudah bisa diakses dan siap dipakai untuk kejadian berikutnya.</li></ul></div>
+      </div>
+      <figure class="sebaran">
+        <img src="data/sebaran_karawang_2019.png?v=2" alt="Dua peta uji sebaran: Karawang 2019 (partikel menumpuk di pantai) dan Teluk Balikpapan 2018 (partikel hanyut ke selatan)" loading="lazy" />
+        <figcaption><b>Cara membaca:</b> oranye = bercak tempat partikel dilepas; merah = bercak yang terlihat di lintasan satelit berikutnya; garis biru = jalur 120 partikel contoh; hitam = posisi akhir partikel. Kalau prakiraannya bagus, titik hitam akan jatuh di atas bercak merah.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="data">
+    <div class="wrap">
+      <h2>Sumber data &amp; lisensi</h2>
+      <ul class="sumber">
+        <li>Citra radar Copernicus Sentinel-1 (ESA), diolah di Google Earth Engine. Foto satelit Copernicus Sentinel-2 (ESA). Angin ERA5 (ECMWF). Hujan GPM IMERG V07 (NASA). Arus laut HYCOM. Mangrove: Global Mangrove Watch v3 (Bunting dkk. 2022, CC BY 4.0). Model sebaran OpenDrift (Dagestad dkk. 2018).</li>
+        <li>Data latih pendeteksi: dataset SOS (Kaggle, CC BY 4.0). Data latih skor prioritas: Yang &amp; Singha 2025, PANGAEA <a href="https://doi.org/10.1594/PANGAEA.980773">10.1594/PANGAEA.980773</a> (CC BY 4.0).</li>
+        <li>Uji independen: Trujillo-Acatitla dkk. (Zenodo 13761290, CC BY 4.0). Uji tambahan: CSIRO Sentinel-1 oil/no-oil (CC BY-SA 4.0).</li>
+        <li>Peta dasar © kontributor OpenStreetMap.</li>
+      </ul>
+    </div>
+  </section>
+  <footer><div class="wrap">Prototipe riset Ade Rizky Darmawan, lanjutan proyek <a href="https://cayman-kelompok1.vercel.app">CAYMAN</a>. Hasil di halaman ini adalah dugaan dari citra radar, bukan konfirmasi tumpahan, dan bukan pernyataan resmi Pertamina.</div></footer>
+  <script src="app.js?v=6"></script>
+</body>
+</html>

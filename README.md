@@ -196,6 +196,10 @@ python ../src/serve_local.py   # buka http://127.0.0.1:8765 (header COOP/COEP ak
 
 Hasil pencarian yang **tidak** dimasukkan karena berupa preprint (belum peer-review), yaitu dari Research Square, SSRN, dan Preprints.org.
 
+## Riset lanjutan: Pantau Bercak Minyak
+
+Lanjutan proyek ini ke citra Sentinel-1 utuh di perairan Indonesia (uji independen, alarm palsu per lintasan, skor prioritas, hujan, mangrove, OpenDrift). Kode, situs, dan laporan ada di [`riset-lanjutan/`](riset-lanjutan/); situs: https://pantau-bercak-minyak.vercel.app
+
 ## Live demo & tim
 
 - **Live demo:** https://cayman-kelompok1.vercel.app (alias: https://cayman-seven.vercel.app)
