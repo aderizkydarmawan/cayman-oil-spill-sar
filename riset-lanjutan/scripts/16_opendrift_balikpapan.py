@@ -17,7 +17,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(HERE, "results", "opendrift_2018-04"); os.makedirs(OUT, exist_ok=True)
 T0, T1 = dt.datetime(2018, 4, 1, 21, 50), dt.datetime(2018, 4, 13, 21, 50)
 W, S, E, N, G = 116.30, -1.90, 117.70, -0.70, 0.04
-ee.Initialize(project="bledos")
+ee.Initialize(project=os.environ["EE_PROJECT"])  # isi dengan project GEE Anda
 lon = np.arange(W + G / 2, E, G); lat = np.arange(N - G / 2, S, -G)
 
 

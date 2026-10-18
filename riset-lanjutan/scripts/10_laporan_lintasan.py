@@ -25,7 +25,7 @@ run = os.path.join(RESULTS, f"s1_vv_db_{DATE}_20m_fixed-32_-17")
 od = os.path.join(RESULTS, f"laporan_{DATE}"); os.makedirs(od, exist_ok=True)
 
 # waktu lintasan dari GEE
-ee.Initialize(project="bledos")
+ee.Initialize(project=os.environ["EE_PROJECT"])  # isi dengan project GEE Anda
 d0 = ee.Date(DATE)
 t_ms = (ee.ImageCollection("COPERNICUS/S1_GRD").filterBounds(ee.Geometry.Rectangle(BBOX))
         .filterDate(d0, d0.advance(1, "day")).filter(ee.Filter.eq("relativeOrbitNumber_start", ORBIT) if ORBIT else ee.Filter.neq("system:index", ""))

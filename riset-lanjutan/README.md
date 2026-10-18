@@ -32,7 +32,7 @@ Citra mentah (±15 GB), model terlatih, dan kunci lembar penilaian tidak diungga
 
 ## Menjalankan ulang
 
-Butuh akun Google Earth Engine (project sendiri), Python 3.12, `earthengine-api`, `rasterio`, `onnxruntime`, `scikit-learn`, `shap`, `opendrift`. Jalankan dari folder induk yang berisi `scripts/`, misalnya:
+Butuh akun Google Earth Engine; isi variabel lingkungan `EE_PROJECT` dengan ID project GEE Anda. Juga butuh Python 3.12, `earthengine-api`, `rasterio`, `onnxruntime`, `scikit-learn`, `shap`, `opendrift`. Jalankan dari folder induk yang berisi `scripts/`, misalnya:
 
 ```
 python scripts/02_unduh_citra.py 2018-04-01 20

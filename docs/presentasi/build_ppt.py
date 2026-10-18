@@ -82,7 +82,7 @@ def stat(sl, x, y, w, big, label, color="navy", size=40):
 
 # ---------------- aset gambar ----------------
 hero = ASSET / "hero_art.png"
-Image.open(r"C:/Users/ADERIZ~1/AppData/Local/Temp/claude-chrome-screenshots-TdtBmq/screenshot-1790698328561-3.jpg").crop((803, 189, 1254, 571)).save(hero)
+Image.open("screenshot_web.jpg").crop((803, 189, 1254, 571)).save(hero)
 qr = ASSET / "qr_web.png"; qrcode.make(WEB, border=1).save(qr)
 team = json.load(open(ROOT / "web" / "team.json", encoding="utf-8"))
 M = {m["id"]: m for m in json.load(open(ROOT / "web" / "model" / "models.json", encoding="utf-8"))["models"]}

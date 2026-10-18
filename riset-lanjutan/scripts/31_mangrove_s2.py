@@ -16,7 +16,7 @@ _init = False
 def _ee():
     global _init
     if not _init:
-        ee.Initialize(project="bledos"); _init = True
+        ee.Initialize(project=os.environ["EE_PROJECT"])  # isi dengan project GEE Anda; _init = True
 
 
 def mangrove_km(titik):

@@ -3,7 +3,7 @@ Keluaran: data/daftar_citra_s1.csv
 """
 import csv, os, ee
 
-ee.Initialize(project="bledos")
+ee.Initialize(project=os.environ["EE_PROJECT"])  # isi dengan project GEE Anda
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # AOI: Teluk Balikpapan + mulut teluk ke Selat Makassar

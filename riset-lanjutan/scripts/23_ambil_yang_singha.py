@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np, pandas as pd, ee
 from rasterio.warp import transform as wt
 
-ee.Initialize(project="bledos")
+ee.Initialize(project=os.environ["EE_PROJECT"])  # isi dengan project GEE Anda
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(HERE, "..", "data_terbuka", "yang_singha"); OUT = os.path.join(SRC, "gee"); os.makedirs(OUT, exist_ok=True)
 PX = 20

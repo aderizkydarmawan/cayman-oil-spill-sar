@@ -14,7 +14,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SC = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SC); import cmod5n
 from saring import bersihkan
-ee.Initialize(project="bledos")
+ee.Initialize(project=os.environ["EE_PROJECT"])  # isi dengan project GEE Anda
 MIN_KM2, R_IN, R_OUT, WIND_LOW, MAX_SCENES, WORKERS = 0.1, 1000, 3000, 3.0, 3, 8
 MODEL = "unet_lite_bersih"   # mask U-Net setelah saring.py
 SKIP = {"balikpapan_2018", "karawang_2019"}      # sudah diuji di tahap 1-10

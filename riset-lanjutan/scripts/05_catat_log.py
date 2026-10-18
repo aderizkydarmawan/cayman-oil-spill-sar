@@ -9,7 +9,7 @@ for f in sorted(glob.glob(os.path.join(RESULTS, "*", "ringkasan.json"))):
     j = json.load(open(f)); name = os.path.basename(os.path.dirname(f))
     params = {"stretch": j["stretch"], "pixel_m": j["pixel_m"], "tile": 256, "stride": 128,
               "thr_unet": 0.45, "thr_deeplab": 0.5, "speckle": "focalMedian3x3",
-              "sea_mask": "JRC GSW1_4 occurrence>50", "gee_project": "bledos"}
+              "sea_mask": "JRC GSW1_4 occurrence>50", "gee_project": os.environ.get("EE_PROJECT")}
     res = {"sea_km2": round(j["sea_km2"], 1),
            **{f"{m}_oil_km2": round(v["oil_km2"], 2) for m, v in j["models"].items()}}
     subprocess.run([sys.executable, LOG, "--project", HERE, "--name", f"{SITUS}-{name}",

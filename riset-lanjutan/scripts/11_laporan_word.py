@@ -9,7 +9,7 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.shared import Cm, Pt, RGBColor
 from situs import _S
 
-PENYUSUN = "Ade Rizky Darmawan · wewamazing41@gmail.com"
+PENYUSUN = "Ade Rizky Darmawan · linkedin.com/in/aderizkydarmawan"
 TANGGAL = "17 Oktober 2026"
 
 # urutan: hari biasa dulu (yang paling sering akan datang), lalu dua kejadian yang diketahui
