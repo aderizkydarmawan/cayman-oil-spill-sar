@@ -280,12 +280,15 @@ init();
 fetch("team.json").then((r) => r.json()).then((team) => {
   const box = $("team");
   team.forEach((m) => {
-    const card = document.createElement("div"); card.className = "member";
+    const card = document.createElement("div"); card.className = m.ketua ? "member ketua" : "member";
     const ok = (v) => v && !String(v).startsWith("ISI_");
     const img = m.foto ? `<img src="${m.foto}" alt="Foto ${m.nama}" loading="lazy">` : `<div class="avatar">${m.nama.charAt(0)}</div>`;
-    card.innerHTML = (m.ketua ? `<span class="badge">Ketua Kelompok</span>` : "") + `${img}<b>${m.nama}</b>` +
-      (ok(m.npm) ? `<span>NPM ${m.npm}</span>` : "") + (ok(m.peran) ? `<span class="muted">${m.peran}</span>` : "") +
-      (ok(m.linkedin) ? `<a href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>` : "");
+    const lk = ok(m.linkedin) ? `<a href="${m.linkedin}" target="_blank" rel="noopener">LinkedIn</a>` : "";
+    card.innerHTML = m.ketua
+      ? `${img}<div><span class="badge">Ketua kelompok</span><b>${m.nama}</b>` + (ok(m.npm) ? `<span>NPM ${m.npm}</span>` : "") +
+        `<span class="peran">${m.peran}</span><p>${m.kontribusi || ""}</p><span class="tautan">${lk}` +
+        (m.kontribusi ? ` <a href="https://pantau-bercak-minyak.vercel.app" target="_blank" rel="noopener">Riset lanjutan</a>` : "") + `</span></div>`
+      : `${img}<b>${m.nama}</b>` + (ok(m.npm) ? `<span>NPM ${m.npm}</span>` : "") + (ok(m.peran) ? `<span class="muted">${m.peran}</span>` : "") + lk;
     box.appendChild(card);
   });
 });

@@ -5,7 +5,8 @@
   --oil: #1e1b4b; --boom: #f97316; --ok: #059669; --warn: #b45309;
   --sheen: linear-gradient(100deg, #7c3aed, #db2777 28%, #f59e0b 52%, #10b981 76%, #0ea5e9);
   --radius: 16px; --shadow: 0 1px 2px rgba(11,37,69,.05), 0 8px 24px rgba(11,37,69,.06);
-  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --sans: "IBM Plex Sans", system-ui, sans-serif; --cond: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -266,3 +267,54 @@ tbody tr:last-child td { border-bottom: 0; }
 }
 .formula { display: grid; gap: 6px; margin-top: 14px; padding: 12px 14px; border: 1px dashed var(--line-strong); border-radius: 12px; font-size: 0.8rem; }
 .formula code { font: 0.76rem var(--mono); color: #334155; white-space: normal; }
+
+/* v24: tipografi IBM Plex, hero tenang, label kalimat biasa (selaras Pantau Bercak Minyak) */
+html { color-scheme: light; scroll-padding-top: 72px; }
+body { font-family: var(--sans); font-variant-numeric: tabular-nums; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
+h1, h2, h4, .brand { font-family: var(--cond); letter-spacing: -.01em; }
+h1 { font-weight: 700; line-height: 1.08; }
+h2 { font-weight: 600; }
+h3 { font: 600 1rem var(--cond); text-transform: none; letter-spacing: 0; color: var(--navy); }
+.eyebrow { font: 600 .85rem var(--sans); text-transform: none; letter-spacing: 0; }
+.pill { font: 500 .85rem var(--sans); background: transparent; border: 0; padding: 0; color: var(--muted); display: inline-flex; gap: 8px; align-items: center; }
+.pill::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--teal); }
+.brand-drop { background: var(--navy); box-shadow: inset -3px -3px 0 var(--teal); }
+.hero { background: #fff; border-bottom: 1px solid var(--line); padding-bottom: 56px; }
+.wave-sep { display: none; }
+.hero-art { filter: none; }
+.hero-art svg { border-radius: 12px; border: 1px solid var(--line-strong); }
+.hero-art .slick, .hero-art .waves path, .sheen { animation: none; }
+.kpis { gap: 0; border-top: 2px solid var(--navy); }
+.kpi { background: none; border: 0; border-radius: 0; padding: 14px 16px 4px 0; }
+.kpi + .kpi { border-left: 1px solid var(--line); padding-left: 16px; }
+.kpi b { font: 600 1.7rem/1.1 var(--cond); letter-spacing: 0; }
+.kpi span { font-size: .82rem; }
+.btn { border-radius: 8px; }
+.btn.primary { box-shadow: none; }
+.btn:hover { transform: none; }
+.card { border-radius: 10px; box-shadow: none; }
+.status-chip, .tag-what-if { font-family: var(--sans); }
+th { font: 600 .8rem var(--sans); text-transform: none; letter-spacing: 0; }
+td:not(:first-child) { font-family: var(--sans); }
+.kpi b, .result b, .sim-stats b, .cost-kpis b, .cbar b, .timeline b, .bar-row b { font-family: var(--cond); }
+figcaption { font-family: var(--sans); }
+.step i { background: var(--navy); -webkit-background-clip: border-box; background-clip: border-box; color: #fff; display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; font: 600 .9rem var(--cond); }
+.lg.now { background: #7c3aed; }
+.links a.lanjut { color: var(--teal); font-weight: 600; }
+.member, .member:hover { transform: none; box-shadow: none; border-radius: 10px; }
+.member:hover img { box-shadow: 0 0 0 2px var(--teal); }
+.member .muted { font-size: .8rem; }
+.member a { border-radius: 6px; }
+.badge { font: 600 .72rem var(--sans); position: static; display: inline-block; margin-bottom: 6px; }
+.member > .badge { position: absolute; }
+.member.ketua { grid-column: 1 / -1; grid-template-columns: 140px minmax(0, 1fr); justify-items: start; text-align: left; gap: 24px; align-items: center; padding: 24px 28px; border: 1px solid var(--line-strong); border-left: 4px solid var(--teal); }
+.member.ketua img { width: 140px; height: 140px; margin: 0; }
+.member.ketua > div { display: grid; gap: 2px; justify-items: start; }
+.member.ketua b { font: 600 1.35rem var(--cond); color: var(--navy); }
+.member.ketua .peran { color: var(--teal); font-weight: 600; font-size: .92rem; }
+.member.ketua p { margin: 8px 0 4px; color: var(--fg); font-size: .93rem; max-width: 72ch; }
+.member.ketua a { display: inline-block; margin: 4px 8px 0 0; }
+@media (max-width: 640px) { .member.ketua { grid-template-columns: 1fr; } .member.ketua img { width: 104px; height: 104px; } .kpi:nth-child(3) { border-left: 0; padding-left: 0; } }
+.team { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+@media (max-width: 1000px) { .team { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); } }

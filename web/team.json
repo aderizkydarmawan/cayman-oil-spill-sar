@@ -2,10 +2,11 @@
  {
   "nama": "Ade Rizky Darmawan",
   "npm": "23083010080",
-  "peran": "Model Architect Specialist (Modelling & Algoritma)",
+  "peran": "Ketua Kelompok & Pemimpin Riset · Model Architect",
   "linkedin": "https://www.linkedin.com/in/aderizkydarmawan/",
   "foto": "img/team/ade.jpg",
-  "ketua": true
+  "ketua": true,
+  "kontribusi": "Memimpin riset dari awal sampai akhir dan terlibat langsung di semua bagian: perumusan masalah, data & pipeline, arsitektur dan pelatihan kelima model, kuantisasi ONNX, aplikasi web dan simulasi, analisis biaya & risiko HSSE, laporan, serta presentasi. Ia juga mengerjakan sendiri riset lanjutannya, Pantau Bercak Minyak."
  },
  {
   "nama": "Arkananta Daniswara Handoyo",

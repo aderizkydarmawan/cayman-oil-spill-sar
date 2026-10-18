@@ -6,8 +6,8 @@
   <title>CAYMAN — Oil Spill SAR</title>
   <meta name="description" content="Deteksi, pemetaan poligon, dan simulasi penyebaran tumpahan minyak dari citra satelit Sentinel-1 SAR, langsung di browser." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" crossorigin="anonymous" />
-  <link rel="stylesheet" href="style.css?v=23" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" crossorigin="anonymous" />
+  <link rel="stylesheet" href="style.css?v=24" />
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -15,7 +15,7 @@
     <div class="wrap topbar-inner">
       <a class="brand" href="#top"><span class="brand-drop"></span>CAYMAN</a>
       <div class="links">
-        <a href="#demo">Demo</a><a href="#simulasi">Simulasi</a><a href="#efisiensi">Biaya &amp; Risiko</a><a href="#hasil">Performa</a><a href="#tim">Tim</a><a href="https://pantau-bercak-minyak.vercel.app" title="Riset lanjutan: uji citra arsip Indonesia">Riset Lanjutan →</a>
+        <a href="#demo">Demo</a><a href="#simulasi">Simulasi</a><a href="#efisiensi">Biaya &amp; Risiko</a><a href="#hasil">Performa</a><a href="#tim">Tim</a><a class="lanjut" href="https://pantau-bercak-minyak.vercel.app" title="Riset lanjutan: uji citra arsip Indonesia">Riset lanjutan</a>
       </div>
     </div>
   </nav>
@@ -23,8 +23,8 @@
   <header class="hero" id="top">
     <div class="wrap hero-grid">
       <div>
-        <span class="pill">Kelompok 1 · CAYMAN · Kasus 38 · HSSE · Edge AI</span>
-        <h1>Temukan tumpahan minyak dari <span class="sheen">citra satelit radar</span>, lalu rencanakan responsnya.</h1>
+        <span class="pill">Kelompok 1, Tugas Besar Deep Learning, Kasus 38</span>
+        <h1>Temukan tumpahan minyak dari citra satelit radar, lalu rencanakan responsnya.</h1>
         <p class="lead">Lima model Machine Learning &amp; Deep Learning membaca citra Sentinel-1 SAR, menggambar poligon area tercemar, memperkirakan arah &amp; laju penyebarannya, dan menghitung panjang oil boom yang dibutuhkan. Semua berjalan di browser.</p>
         <div class="cta">
           <a class="btn primary" href="#demo">Coba Deteksi</a>
@@ -82,7 +82,7 @@
     <section id="demo" class="section alt">
       <div class="wrap">
         <div class="section-head">
-          <div><span class="eyebrow">01 · Deteksi</span><h2>Demo interaktif</h2></div>
+          <div><span class="eyebrow">Langkah 1: deteksi</span><h2>Demo interaktif</h2></div>
           <div class="status-chip"><span class="led" id="led"></span><span id="status">memuat model…</span></div>
         </div>
 
@@ -163,7 +163,7 @@
     <section id="simulasi" class="section">
       <div class="wrap">
         <div class="section-head">
-          <div><span class="eyebrow">02 · Respons HSSE</span><h2>Simulasi arah &amp; laju penyebaran</h2></div>
+          <div><span class="eyebrow">Langkah 2: respons HSSE</span><h2>Simulasi arah &amp; laju penyebaran</h2></div>
           <span class="tag-what-if">Skenario what-if</span>
         </div>
         <p class="lead small">Poligon hasil deteksi di atas digerakkan dengan aturan drift <b>3% kecepatan angin + 100% arus permukaan</b> dan diperluas dengan persamaan penyebaran <b>Fay</b>. Hasilnya: ke mana slick bergerak, seberapa cepat melebar, dan berapa panjang <b>oil boom</b> (rangkaian pelampung penahan) yang perlu disiapkan saat tim tiba.</p>
@@ -227,7 +227,7 @@
     <section id="efisiensi" class="section alt">
       <div class="wrap" id="hse">
         <div class="section-head">
-          <div><span class="eyebrow">03 · Nilai bisnis</span><h2>Efisiensi biaya &amp; manajemen risiko</h2></div>
+          <div><span class="eyebrow">Langkah 3: nilai bisnis</span><h2>Efisiensi biaya &amp; manajemen risiko</h2></div>
           <span class="muted">Semua angka default = asumsi ilustratif, silakan ubah</span>
         </div>
 
@@ -277,7 +277,7 @@
     <section id="hasil" class="section">
       <div class="wrap">
         <div class="section-head">
-          <div><span class="eyebrow">04 · Evaluasi</span><h2>Performa model: Machine Learning vs Deep Learning</h2></div>
+          <div><span class="eyebrow">Evaluasi</span><h2>Performa model: Machine Learning vs Deep Learning</h2></div>
           <span class="muted">839 citra test Sentinel-1 · threshold dipilih di validation</span>
         </div>
         <div class="perf-grid">
@@ -296,7 +296,7 @@
     <!-- CARA KERJA -->
     <section id="cara" class="section alt">
       <div class="wrap">
-        <div class="section-head"><div><span class="eyebrow">05 · Alur</span><h2>Cara kerja</h2></div></div>
+        <div class="section-head"><div><span class="eyebrow">Alur</span><h2>Cara kerja</h2></div></div>
         <div class="steps">
           <div class="card step"><i>01</i><h4>Citra satelit</h4><p>Sentinel-1 SAR memotret laut siang-malam dan menembus awan. Minyak tampak gelap karena meredam riak gelombang.</p></div>
           <div class="card step"><i>02</i><h4>Segmentasi ML / DL</h4><p>Random Forest &amp; LightGBM memakai 13 fitur tekstur buatan; U-Net &amp; DeepLabV3+ belajar fitur sendiri.</p></div>
@@ -309,7 +309,7 @@
     <!-- TIM -->
     <section id="tim" class="section">
       <div class="wrap">
-        <div class="section-head"><div><span class="eyebrow">06 · Tim</span><h2>Tim CAYMAN</h2></div><span class="muted">Kelompok 1 · S1 Sains Data</span></div>
+        <div class="section-head"><div><span class="eyebrow">Tim</span><h2>Tim CAYMAN</h2></div><span class="muted">Kelompok 1 · S1 Sains Data</span></div>
         <div id="team" class="team"></div>
       </div>
     </section>
@@ -322,7 +322,7 @@
   <script src="geo.js?v=23"></script>
   <script src="sim.js?v=23"></script>
   <script src="hse.js?v=23"></script>
-  <script src="app.js?v=23"></script>
+  <script src="app.js?v=24"></script>
   <script>
     // pelampung oil boom pada ilustrasi hero
     (() => {
