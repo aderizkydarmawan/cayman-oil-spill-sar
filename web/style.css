@@ -318,3 +318,7 @@ figcaption { font-family: var(--sans); }
 @media (max-width: 640px) { .member.ketua { grid-template-columns: 1fr; } .member.ketua img { width: 104px; height: 104px; } .kpi:nth-child(3) { border-left: 0; padding-left: 0; } }
 .team { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 @media (max-width: 1000px) { .team { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); } }
+
+.hero-art.foto { padding: 0; }
+.hero-art.foto img { width: 100%; height: auto; display: block; border-radius: 12px; border: 1px solid var(--line-strong); }
+.hero-art.foto figcaption { text-align: left; font-size: .8rem; line-height: 1.45; margin-top: 8px; color: var(--muted); }

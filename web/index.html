@@ -7,7 +7,7 @@
   <meta name="description" content="Deteksi, pemetaan poligon, dan simulasi penyebaran tumpahan minyak dari citra satelit Sentinel-1 SAR, langsung di browser." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" crossorigin="anonymous" />
-  <link rel="stylesheet" href="style.css?v=24" />
+  <link rel="stylesheet" href="style.css?v=25" />
   <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.30.0/dist/ort.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -37,41 +37,9 @@
           <div class="kpi"><b>0 server</b><span>Inferensi di browser</span></div>
         </div>
       </div>
-      <figure class="hero-art" aria-label="Ilustrasi tumpahan minyak di laut yang dikurung oil boom, dipantau satelit">
-        <svg viewBox="0 0 520 440" role="img">
-          <defs>
-            <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0f4fb"/><stop offset="1" stop-color="#9fd6ea"/></linearGradient>
-            <linearGradient id="oil" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset=".3" stop-color="#db2777"/><stop offset=".55" stop-color="#f59e0b"/><stop offset=".78" stop-color="#10b981"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient>
-            <radialGradient id="dark" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#1e1b4b" stop-opacity=".85"/><stop offset="1" stop-color="#1e1b4b" stop-opacity=".25"/></radialGradient>
-            <clipPath id="round"><rect width="520" height="440" rx="28"/></clipPath>
-          </defs>
-          <g clip-path="url(#round)">
-            <rect width="520" height="440" fill="url(#sea)"/>
-            <g class="waves" stroke="#fff" stroke-opacity=".7" fill="none" stroke-width="2">
-              <path d="M-20 70 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
-              <path d="M-50 380 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
-              <path d="M-10 410 q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0"/>
-            </g>
-            <path d="M160 170 C200 120 300 125 345 160 C395 198 380 262 322 285 C265 310 190 296 160 258 C135 228 138 196 160 170Z" fill="url(#dark)"/>
-            <path class="slick" d="M175 180 C210 140 290 145 330 172 C368 200 358 250 312 268 C262 288 205 278 180 250 C160 228 160 200 175 180Z" fill="url(#oil)" opacity=".55"/>
-            <path d="M175 180 C210 140 290 145 330 172 C368 200 358 250 312 268 C262 288 205 278 180 250 C160 228 160 200 175 180Z" fill="none" stroke="#fde047" stroke-width="3" stroke-dasharray="1 0"/>
-            <g class="boom" fill="#fb923c" stroke="#9a3412" stroke-width="1.5">
-              <path d="M150 170 C195 110 305 112 358 150 C412 192 398 275 330 300 C265 324 180 312 145 262 C118 228 124 196 150 170Z" fill="none" stroke="#f97316" stroke-width="3"/>
-            </g>
-            <g id="floats"></g>
-            <g transform="translate(360 330) rotate(-12)">
-              <path d="M0 0 h120 l-12 22 h-100z" fill="#334155"/><rect x="18" y="-16" width="34" height="16" rx="3" fill="#f8fafc"/><rect x="70" y="-8" width="30" height="8" fill="#ef4444"/>
-            </g>
-            <g transform="translate(70 40)">
-              <rect x="-6" y="-4" width="40" height="24" rx="4" fill="#0f172a"/><rect x="-44" y="2" width="34" height="12" fill="#2563eb"/><rect x="38" y="2" width="34" height="12" fill="#2563eb"/>
-              <path d="M14 20 L-10 140 M14 20 L130 150" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="4 5" opacity=".7"/>
-            </g>
-            <g font-family="JetBrains Mono, monospace" font-size="12" font-weight="600">
-              <rect x="300" y="110" width="150" height="26" rx="13" fill="#fff" opacity=".92"/><text x="314" y="127" fill="#0f172a">Slick 1 · 2,41 km²</text>
-              <rect x="30" y="300" width="140" height="26" rx="13" fill="#fff7ed" opacity=".95"/><text x="42" y="317" fill="#9a3412">Oil boom 9,8 km</text>
-            </g>
-          </g>
-        </svg>
+      <figure class="hero-art foto">
+        <img src="img/hero_oilboom.jpg" width="1400" height="1003" alt="Foto udara: dua kapal menarik oil boom berbentuk V ke arah kapal penampung di tengah lapisan minyak, Teluk Meksiko 2010" />
+        <figcaption>Respons tumpahan Deepwater Horizon, Teluk Meksiko, 28 April 2010: dua kapal menarik <i>oil boom</i> untuk mengumpulkan minyak (jejak cokelat kemerahan) ke kapal penampung. Foto: PO2 Prentice Danner, U.S. Coast Guard (domain publik, via Wikimedia Commons).</figcaption>
       </figure>
     </div>
     <svg class="wave-sep" viewBox="0 0 1440 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 30 C240 60 480 0 720 30 S1200 60 1440 30 V60 H0Z"/></svg>
@@ -323,12 +291,5 @@
   <script src="sim.js?v=23"></script>
   <script src="hse.js?v=23"></script>
   <script src="app.js?v=24"></script>
-  <script>
-    // pelampung oil boom pada ilustrasi hero
-    (() => {
-      const p = document.querySelector(".hero-art .boom path"), g = document.getElementById("floats"), L = p.getTotalLength();
-      for (let i = 0; i < 34; i++) { const q = p.getPointAtLength((i / 34) * L); g.insertAdjacentHTML("beforeend", `<circle cx="${q.x}" cy="${q.y}" r="5.5" fill="#fb923c" stroke="#9a3412" stroke-width="1.5"/>`); }
-    })();
-  </script>
 </body>
 </html>
